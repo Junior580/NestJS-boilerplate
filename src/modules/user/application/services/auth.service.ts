@@ -11,9 +11,9 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly hashProvider: HashProvider,
     private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService,
+    private readonly hashProvider: HashProvider,
   ) {}
 
   async execute(props: AuthDto) {

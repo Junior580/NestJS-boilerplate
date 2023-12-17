@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { HashProvider } from '@shared/application/providers/hash-provider';
 import { UserEntity } from '../../domain/entities/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
-import { UserOutputMapper } from '../dto/user-output.ts';
+import { UserOutput, UserOutputMapper } from '../dto/user-output.ts';
+import { Service } from '@shared/application/services';
 
 type Input = {
   name: string;
@@ -10,8 +11,10 @@ type Input = {
   password: string;
 };
 
+type Output = UserOutput;
+
 @Injectable()
-export class UserService {
+export class UserService implements Service<Input, Output> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly hashProvider: HashProvider,

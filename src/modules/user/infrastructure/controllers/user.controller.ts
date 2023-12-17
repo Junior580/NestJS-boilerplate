@@ -1,7 +1,7 @@
 import { Controller, Post, Body, UseFilters } from '@nestjs/common';
 import { UserService } from '../../application/services/create-user.service';
 import { SignupDto } from '../dto/signup.dto';
-import { HttpExceptionFilter } from '@shared/infrastructure/http/filters/http-exception.filter';
+import { HttpExceptionFilter } from '@shared/infrastructure/http/exception-filters/http-exception.filter';
 
 @Controller('user')
 @UseFilters(new HttpExceptionFilter())

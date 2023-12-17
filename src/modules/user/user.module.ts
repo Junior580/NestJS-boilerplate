@@ -13,12 +13,8 @@ import { BcryptjsHashProvider } from './infrastructure/providers/hash-provider';
 
 @Module({
   imports: [JwtModule.register(jwtConfig)],
-  controllers: [
-    UserController,
-    // AuthController
-  ],
+  controllers: [UserController],
   providers: [
-    // AuthService,
     {
       provide: 'PrismaService',
       useClass: PrismaService,
@@ -44,6 +40,16 @@ import { BcryptjsHashProvider } from './infrastructure/providers/hash-provider';
       },
       inject: ['UserRepository', 'HashProvider'],
     },
+    // {
+    //   provide: AuthService,
+    //   useFactory: (
+    //     userRepository: UserRepository,
+    //     hashProvider: HashProvider,
+    //   ) => {
+    //     return new AuthService(userRepository, hashProvider);
+    //   },
+    //   inject: ['UserRepository', 'HashProvider'],
+    // },
   ],
 })
 export class UserModule {}
