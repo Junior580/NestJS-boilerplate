@@ -41,7 +41,7 @@ export class UserPrismaRepository implements UserRepository {
   }
 
   async emailExists(email: string) {
-    const userExists = this.prismaService.user.findFirst({
+    const userExists = await this.prismaService.user.findFirst({
       where: { email },
     });
 

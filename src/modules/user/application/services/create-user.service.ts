@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { HashProvider } from '../../infrastructure/providers/hash-provider';
+import { HashProvider } from '@shared/application/providers/hash-provider';
 import { UserEntity } from '../../domain/entities/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserOutputMapper } from '../dto/user-output.ts';

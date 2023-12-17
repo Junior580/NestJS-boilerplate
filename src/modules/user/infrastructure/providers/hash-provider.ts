@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { HashProvider } from '@shared/application/providers/hash-provider';
 import { hash, compare } from 'bcrypt';
 
-@Injectable()
-export class HashProvider {
+export class BcryptjsHashProvider implements HashProvider {
   public async generateHash(payload: string): Promise<string> {
     const saltRounds = 10;
     return hash(payload, saltRounds);
