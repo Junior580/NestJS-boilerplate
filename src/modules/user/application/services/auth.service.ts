@@ -3,15 +3,15 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AuthDto } from '../dto/create-auth.dto';
-import { HashProviderService } from './hash-provider.service';
-import { PrismaService } from '../../../shared/prisma/prisma.service';
+import { AuthDto } from '../dto/auth.dto';
+import { HashProvider } from '../../infrastructure/providers/hash-provider';
+import { PrismaService } from '../../../../shared/infrastructure/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly hashProvider: HashProviderService,
+    private readonly hashProvider: HashProvider,
     private readonly prismaService: PrismaService,
     private readonly jwtService: JwtService,
   ) {}
