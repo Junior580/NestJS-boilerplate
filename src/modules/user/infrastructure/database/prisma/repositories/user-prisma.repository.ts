@@ -34,6 +34,7 @@ export class UserPrismaRepository implements UserRepository {
       const user = await this.prismaService.user.findFirst({
         where: { email },
       });
+
       return UserModelMapper.toEntity(user);
     } catch (error) {
       throw new Error(`UserModel not found using email ${email}`);

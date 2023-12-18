@@ -1,48 +1,42 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthDto } from '../dto/auth.dto';
 import { HashProvider } from '@shared/application/providers/hash-provider';
-import { PrismaService } from '../../../../shared/infrastructure/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
+import { Service } from '@shared/application/services';
+import { UserRepository } from '@modules/user/domain/repositories/user.repository';
+
+type Input = AuthDto;
+
+type Output = {
+  access_token: string;
+};
 
 @Injectable()
-export class AuthService {
+export class AuthService implements Service<Input, Output> {
   constructor(
-    private readonly prismaService: PrismaService,
+    private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
     private readonly hashProvider: HashProvider,
   ) {}
 
   async execute(props: AuthDto) {
-    return await this.prismaService.user
-      .findFirstOrThrow({
-        where: {
-          email: props.email,
-        },
-      })
-      .then(
-        async (user) => {
-          const passwordMatched = await this.hashProvider.compareHash(
-            props.password,
-            user.password,
-          );
+    const { email, password } = props;
 
-          if (!passwordMatched) {
-            throw new UnauthorizedException();
-          }
+    const user = await this.userRepository.findByEmail(email);
 
-          const payload = { name: user.name, email: user.email };
+    const passwordMatched = await this.hashProvider.compareHash(
+      password,
+      user.password,
+    );
 
-          return {
-            access_token: await this.jwtService.signAsync(payload),
-          };
-        },
-        () => {
-          throw new NotFoundException('user does not exists');
-        },
-      );
+    if (!passwordMatched) {
+      throw new UnauthorizedException();
+    }
+
+    const payload = { name: user.name, sub: user._id };
+
+    const access_token = await this.jwtService.signAsync(payload);
+
+    return { access_token };
   }
 }

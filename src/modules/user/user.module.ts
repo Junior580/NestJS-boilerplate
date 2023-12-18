@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { UserService } from '@modules/user/application/services/create-user.service';
 import { UserController } from './infrastructure/controllers/user.controller';
 import { HashProvider } from '../../shared/application/providers/hash-provider';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthController } from './infrastructure/controllers/auth.controller';
 import { AuthService } from '@modules/user/application/services/auth.service';
 import { jwtConfig } from '../../config/auth';
@@ -13,7 +13,7 @@ import { BcryptjsHashProvider } from './infrastructure/providers/hash-provider';
 
 @Module({
   imports: [JwtModule.register(jwtConfig)],
-  controllers: [UserController],
+  controllers: [UserController, AuthController],
   providers: [
     {
       provide: 'PrismaService',
@@ -40,16 +40,17 @@ import { BcryptjsHashProvider } from './infrastructure/providers/hash-provider';
       },
       inject: ['UserRepository', 'HashProvider'],
     },
-    // {
-    //   provide: AuthService,
-    //   useFactory: (
-    //     userRepository: UserRepository,
-    //     hashProvider: HashProvider,
-    //   ) => {
-    //     return new AuthService(userRepository, hashProvider);
-    //   },
-    //   inject: ['UserRepository', 'HashProvider'],
-    // },
+    {
+      provide: AuthService,
+      useFactory: (
+        userRepository: UserRepository,
+        jwtService: JwtService,
+        hashProvider: HashProvider,
+      ) => {
+        return new AuthService(userRepository, jwtService, hashProvider);
+      },
+      inject: ['UserRepository', JwtService, 'HashProvider'],
+    },
   ],
 })
 export class UserModule {}
