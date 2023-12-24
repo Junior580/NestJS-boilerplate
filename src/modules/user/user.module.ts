@@ -1,19 +1,25 @@
 import { Module } from '@nestjs/common';
 import { UserService } from '@modules/user/application/services/create-user.service';
-import { UserController } from './infrastructure/controllers/user.controller';
+import { CreateUserController } from './infrastructure/controllers/create-user.controller';
 import { HashProvider } from '../../shared/application/providers/hash-provider';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import { AuthController } from './infrastructure/controllers/auth.controller';
 import { AuthService } from '@modules/user/application/services/auth.service';
-import { jwtConfig } from '../../config/auth';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { UserPrismaRepository } from './infrastructure/database/prisma/repositories/user-prisma.repository';
 import { UserRepository } from './domain/repositories/user.repository';
 import { BcryptjsHashProvider } from './infrastructure/providers/hash-provider';
+import { ListUserService } from './application/services/list-user.service';
+import { ListUserController } from './infrastructure/controllers/list-user.controller';
+import { LogoutController } from './infrastructure/controllers/logout.controller';
 
 @Module({
-  imports: [JwtModule.register(jwtConfig)],
-  controllers: [UserController, AuthController],
+  controllers: [
+    CreateUserController,
+    AuthController,
+    ListUserController,
+    LogoutController,
+  ],
   providers: [
     {
       provide: 'PrismaService',
@@ -50,6 +56,13 @@ import { BcryptjsHashProvider } from './infrastructure/providers/hash-provider';
         return new AuthService(userRepository, jwtService, hashProvider);
       },
       inject: ['UserRepository', JwtService, 'HashProvider'],
+    },
+    {
+      provide: ListUserService,
+      useFactory: (userRepository: UserRepository) => {
+        return new ListUserService(userRepository);
+      },
+      inject: ['UserRepository'],
     },
   ],
 })

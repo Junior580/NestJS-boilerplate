@@ -5,7 +5,7 @@ import { HttpExceptionFilter } from '@shared/infrastructure/http/exception-filte
 
 @Controller('user')
 @UseFilters(new HttpExceptionFilter())
-export class UserController {
+export class CreateUserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()

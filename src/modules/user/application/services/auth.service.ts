@@ -7,9 +7,7 @@ import { UserRepository } from '@modules/user/domain/repositories/user.repositor
 
 type Input = AuthDto;
 
-type Output = {
-  access_token: string;
-};
+type Output = string;
 
 @Injectable()
 export class AuthService implements Service<Input, Output> {
@@ -37,6 +35,6 @@ export class AuthService implements Service<Input, Output> {
 
     const access_token = await this.jwtService.signAsync(payload);
 
-    return { access_token };
+    return access_token;
   }
 }

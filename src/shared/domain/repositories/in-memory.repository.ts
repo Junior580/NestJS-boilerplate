@@ -14,9 +14,9 @@ export abstract class InMemoryRepository<E extends Entity>
   //   return this._get(id);
   // }
 
-  // async findAll(): Promise<E[]> {
-  //   return this.items;
-  // }
+  async findAll(): Promise<E[]> {
+    return this.items;
+  }
 
   // async update(entity: E): Promise<void> {
   //   await this._get(entity.id);
