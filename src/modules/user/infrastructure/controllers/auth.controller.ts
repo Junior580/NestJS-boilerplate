@@ -9,14 +9,12 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post()
-  async create(
+  async authLogin(
     @Body() createAuthDto: AuthDto,
     @Res({ passthrough: true }) response: FastifyReply,
   ) {
-    const token = await this.authService.execute(createAuthDto);
-
-    response.setCookie('@token', token, { httpOnly: true });
-
+    const { access_token } = await this.authService.execute(createAuthDto);
+    response.setCookie('@token', access_token, { httpOnly: true });
     return { success: 'ok' };
   }
 }

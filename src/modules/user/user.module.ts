@@ -12,6 +12,8 @@ import { BcryptjsHashProvider } from './infrastructure/providers/hash-provider';
 import { ListUserService } from './application/services/list-user.service';
 import { ListUserController } from './infrastructure/controllers/list-user.controller';
 import { LogoutController } from './infrastructure/controllers/logout.controller';
+import { RefreshTokenService } from './application/services/refresh-token.service';
+import { RefreshTokenController } from './infrastructure/controllers/refresh-token.controller';
 
 @Module({
   controllers: [
@@ -19,6 +21,7 @@ import { LogoutController } from './infrastructure/controllers/logout.controller
     AuthController,
     ListUserController,
     LogoutController,
+    RefreshTokenController,
   ],
   providers: [
     {
@@ -64,6 +67,7 @@ import { LogoutController } from './infrastructure/controllers/logout.controller
       },
       inject: ['UserRepository'],
     },
+    RefreshTokenService,
   ],
 })
 export class UserModule {}

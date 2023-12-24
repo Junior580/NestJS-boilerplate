@@ -19,6 +19,7 @@ export class AuthGuard implements CanActivate {
     if (!token) {
       throw new UnauthorizedException('Access denied. Token not provided.');
     }
+
     try {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: process.env.JWT_PASS,

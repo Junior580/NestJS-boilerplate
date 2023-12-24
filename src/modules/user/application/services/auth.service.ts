@@ -1,4 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+
 import { AuthDto } from '../dto/auth.dto';
 import { HashProvider } from '@shared/application/providers/hash-provider';
 import { JwtService } from '@nestjs/jwt';
@@ -7,7 +8,7 @@ import { UserRepository } from '@modules/user/domain/repositories/user.repositor
 
 type Input = AuthDto;
 
-type Output = string;
+type Output = { access_token: string };
 
 @Injectable()
 export class AuthService implements Service<Input, Output> {
@@ -17,7 +18,7 @@ export class AuthService implements Service<Input, Output> {
     private readonly hashProvider: HashProvider,
   ) {}
 
-  async execute(props: AuthDto) {
+  async execute(props: Input) {
     const { email, password } = props;
 
     const user = await this.userRepository.findByEmail(email);
@@ -31,10 +32,12 @@ export class AuthService implements Service<Input, Output> {
       throw new UnauthorizedException();
     }
 
-    const payload = { name: user.name, sub: user._id };
+    const payloadToken = { name: user.name, id: user._id };
 
-    const access_token = await this.jwtService.signAsync(payload);
+    const access_token = await this.jwtService.signAsync(payloadToken, {
+      expiresIn: '15m',
+    });
 
-    return access_token;
+    return { access_token };
   }
 }
