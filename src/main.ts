@@ -15,14 +15,15 @@ async function bootstrap() {
 
   app.enableCors({
     credentials: true,
-    origin: process.env.FRONTEND_URL,
+    // origin: process.env.FRONTEND_URL,
+    origin: 'http://localhost:3000',
   });
 
   app.register(fastifyCookie, {
     secret: process.env.JWT_PASS,
   });
 
-  await app.listen(3000);
+  await app.listen(3333);
 }
 
 bootstrap();

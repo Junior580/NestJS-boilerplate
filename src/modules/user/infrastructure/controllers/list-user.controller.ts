@@ -1,6 +1,7 @@
 import { ListUserService } from '@modules/user/application/services/list-user.service';
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@shared/infrastructure/http/guards/auth.guard';
+import { ListUsersDto } from '../dto/list-users.dto';
 
 @Controller('list-user')
 export class ListUserController {
@@ -8,7 +9,7 @@ export class ListUserController {
 
   @Get()
   @UseGuards(AuthGuard)
-  listUsers() {
-    return this.userService.execute();
+  listUsers(@Query() searchParams: ListUsersDto) {
+    return this.userService.execute(searchParams);
   }
 }

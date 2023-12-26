@@ -1,13 +1,61 @@
 import { UserEntity } from '@modules/user/domain/entities/user.entity';
-import { UserRepository } from '@modules/user/domain/repositories/user.repository';
+import {
+  UserRepository,
+  UserSearchParams,
+  UserSearchResult,
+} from '@modules/user/domain/repositories/user.repository';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { UserModelMapper } from '../models/user-model.mapper';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserPrismaRepository implements UserRepository {
+  sortableFields: string[] = ['name', 'createdAt'];
+
   constructor(private prismaService: PrismaService) {}
 
+  async search(props: UserSearchParams): Promise<UserSearchResult> {
+    const sortable = this.sortableFields?.includes(props.sort) || false;
+    const orderByField = sortable ? props.sort : 'createdAt';
+    const orderByDir = sortable ? props.sortDir : 'desc';
+
+    const count = await this.prismaService.user.count({
+      ...(props.filter && {
+        where: {
+          name: {
+            contains: props.filter,
+            mode: 'insensitive',
+          },
+        },
+      }),
+    });
+
+    const models = await this.prismaService.user.findMany({
+      ...(props.filter && {
+        where: {
+          name: {
+            contains: props.filter,
+            mode: 'insensitive',
+          },
+        },
+      }),
+      orderBy: {
+        [orderByField]: orderByDir,
+      },
+      skip: props.page && props.page > 0 ? (props.page - 1) * props.perPage : 1,
+      take: props.perPage && props.perPage > 0 ? props.perPage : 15,
+    });
+
+    return new UserSearchResult({
+      items: models.map((model) => UserModelMapper.toEntity(model)),
+      total: count,
+      currentPage: props.page,
+      perPage: props.perPage,
+      sort: orderByField,
+      sortDir: orderByDir,
+      filter: props.filter,
+    });
+  }
   async insert(entity: UserEntity): Promise<void> {
     await this.prismaService.user.create({
       data: entity.toJSON(),
@@ -50,7 +98,10 @@ export class UserPrismaRepository implements UserRepository {
 
       return UserModelMapper.toEntity(user);
     } catch (error) {
-      throw new Error(`UserModel not found using email ${email}`);
+      throw new HttpException(
+        `User Model not found using email ${email}`,
+        HttpStatus.NOT_FOUND,
+      );
     }
   }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HashProvider } from '@shared/application/providers/hash-provider';
 import { UserEntity } from '../../domain/entities/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
-import { UserOutput, UserOutputMapper } from '../dto/user-output.ts';
+import { UserOutput, UserOutputMapper } from '../dto/user-output.dto';
 import { Service } from '@shared/application/services';
 
 type Input = {

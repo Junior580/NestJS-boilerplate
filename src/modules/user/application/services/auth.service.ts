@@ -8,7 +8,7 @@ import { UserRepository } from '@modules/user/domain/repositories/user.repositor
 
 type Input = AuthDto;
 
-type Output = { access_token: string };
+type Output = { access_token: string; refresh_token: string };
 
 @Injectable()
 export class AuthService implements Service<Input, Output> {
@@ -29,15 +29,21 @@ export class AuthService implements Service<Input, Output> {
     );
 
     if (!passwordMatched) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(
+        'Incorrect username and password combination',
+      );
     }
 
-    const payloadToken = { name: user.name, id: user._id };
+    const payload = { id: user._id, name: user.name, email: user.email };
 
-    const access_token = await this.jwtService.signAsync(payloadToken, {
-      expiresIn: '15m',
+    const access_token = await this.jwtService.signAsync(payload, {
+      expiresIn: '5m',
     });
 
-    return { access_token };
+    const refresh_token = await this.jwtService.signAsync(payload, {
+      expiresIn: '30m',
+    });
+
+    return { access_token, refresh_token };
   }
 }

@@ -13,8 +13,10 @@ export class AuthController {
     @Body() createAuthDto: AuthDto,
     @Res({ passthrough: true }) response: FastifyReply,
   ) {
-    const { access_token } = await this.authService.execute(createAuthDto);
-    response.setCookie('@token', access_token, { httpOnly: true });
-    return { success: 'ok' };
+    const { access_token, refresh_token } =
+      await this.authService.execute(createAuthDto);
+    response.setCookie('@auth', access_token, { httpOnly: true });
+    response.setCookie('@refresh', refresh_token, { httpOnly: true });
+    return { success: 'ok', access_token, refresh_token };
   }
 }
