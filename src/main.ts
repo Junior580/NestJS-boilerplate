@@ -6,6 +6,7 @@ import {
 import fastifyCookie from '@fastify/cookie';
 
 import { AppModule } from './app.module';
+import { applyGlobalConfig } from '@config/global-config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -13,15 +14,11 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
-  app.enableCors({
-    credentials: true,
-    // origin: process.env.FRONTEND_URL,
-    origin: 'http://localhost:3000',
-  });
-
   app.register(fastifyCookie, {
     secret: process.env.JWT_PASS,
   });
+
+  applyGlobalConfig(app);
 
   await app.listen(3333);
 }

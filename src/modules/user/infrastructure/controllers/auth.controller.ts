@@ -1,10 +1,8 @@
-import { Controller, Post, Body, UseFilters, Res } from '@nestjs/common';
+import { Controller, Post, Body, Res } from '@nestjs/common';
 import { AuthService } from '../../application/services/auth.service';
 import { AuthDto } from '../../application/dto/auth.dto';
-import { HttpExceptionFilter } from '@shared/infrastructure/http/exception-filters/http-exception.filter';
 import { FastifyReply } from 'fastify';
 @Controller('auth')
-@UseFilters(new HttpExceptionFilter())
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

@@ -1,11 +1,9 @@
 import { RefreshAuthDto } from '@modules/user/application/dto/refresh-token.dto';
 import { RefreshTokenService } from '@modules/user/application/services/refresh-token.service';
-import { Body, Controller, Post, Res, UseFilters } from '@nestjs/common';
-import { HttpExceptionFilter } from '@shared/infrastructure/http/exception-filters/http-exception.filter';
+import { Body, Controller, Post, Res } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
 
 @Controller('auth/refresh')
-@UseFilters(new HttpExceptionFilter())
 export class RefreshTokenController {
   constructor(private readonly refreshTokenService: RefreshTokenService) {}
 

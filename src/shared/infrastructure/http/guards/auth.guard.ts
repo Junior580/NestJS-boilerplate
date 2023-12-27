@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivate {
 
   private extractTokenFromHeader(request: FastifyRequest): string | undefined {
     const cookies = request.cookies;
-    const token = cookies['@token'];
+    const token = cookies['@auth'];
 
     return token ? token : undefined;
   }
