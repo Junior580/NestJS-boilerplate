@@ -27,7 +27,7 @@ model User {
 }
 
 model Account {
-  id                String  @id @default(cuid()) @map("_id")
+  id                String   @id @default(cuid()) @map("_id")
   userId            String
   type              String
   provider          String
@@ -39,6 +39,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
+  createdAt         DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -55,19 +56,21 @@ model VerificationToken {
 }
 
 model PasswordResetToken {
-  id      String   @id @default(cuid()) @map("_id")
-  email   String
-  token   String   @unique
-  expires DateTime
+  id        String   @id @default(cuid()) @map("_id")
+  email     String
+  token     String   @unique
+  expires   DateTime
+  createdAt DateTime @default(now())
 
   @@unique([email, token])
 }
 
 model TwoFactorToken {
-  id      String   @id @default(cuid()) @map("_id")
-  email   String
-  token   String   @unique
-  expires DateTime
+  id        String   @id @default(cuid()) @map("_id")
+  email     String
+  token     String   @unique
+  expires   DateTime
+  createdAt DateTime @default(now())
 
   @@unique([email, token])
 }
@@ -75,8 +78,9 @@ model TwoFactorToken {
 model TwoFactorConfirmation {
   id String @id @default(cuid()) @map("_id")
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 
   @@unique([userId])
 }
