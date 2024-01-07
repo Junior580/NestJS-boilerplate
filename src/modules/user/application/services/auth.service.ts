@@ -37,11 +37,11 @@ export class AuthService implements Service<Input, Output> {
     const payload = { id: user._id, name: user.name, email: user.email };
 
     const access_token = await this.jwtService.signAsync(payload, {
-      expiresIn: '5m',
+      expiresIn: '24h',
     });
 
     const refresh_token = await this.jwtService.signAsync(payload, {
-      expiresIn: '30m',
+      expiresIn: '24h',
     });
 
     return { access_token, refresh_token };

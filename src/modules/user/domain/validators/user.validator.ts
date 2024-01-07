@@ -7,8 +7,15 @@ import {
   IsOptional,
   IsString,
   MaxLength,
+  IsBoolean,
+  IsArray,
+  ArrayNotEmpty,
 } from 'class-validator';
 
+enum UserRole {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}
 export class UserRules {
   @MaxLength(255)
   @IsString()
@@ -28,10 +35,54 @@ export class UserRules {
 
   @IsDate()
   @IsOptional()
-  createdAt?: Date;
+  emailVerified?: Date;
 
-  constructor({ email, name, password, createdAt }: UserProps) {
-    Object.assign(this, { email, name, password, createdAt });
+  @MaxLength(255)
+  @IsString()
+  @IsOptional()
+  image?: string;
+
+  @MaxLength(255)
+  @IsString()
+  @IsNotEmpty()
+  role: UserRole;
+
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  accounts: string[];
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isTwoFactorEnabled: boolean;
+
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  twoFactorConfirmation?: string[];
+
+  constructor({
+    email,
+    name,
+    password,
+    emailVerified,
+    image,
+    role,
+    accounts,
+    isTwoFactorEnabled,
+    twoFactorConfirmation,
+  }: UserProps) {
+    Object.assign(this, {
+      email,
+      name,
+      password,
+      emailVerified,
+      image,
+      role,
+      accounts,
+      isTwoFactorEnabled,
+      twoFactorConfirmation,
+    });
   }
 }
 

@@ -1,0 +1,34 @@
+### create user
+POST http://localhost:3333/user
+content-type: application/json
+
+{
+	"name":"user44",
+	"email":"user44@email.com",
+	"password":"teste123@"
+}
+
+
+### Auth
+POST http://localhost:3333/auth
+content-type: application/json
+
+{
+	"email":"user1@email.com",
+	"password":"teste123@"
+}
+
+### get orders
+GET http://localhost:3333/list-user
+
+
+###
+POST http://localhost:3333/auth/refresh
+content-type: application/json
+
+{
+	"refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdmYTMzNDM1LTY5YzAtNGMzNi1hYTRkLWJlODBlODk0MGI1YiIsIm5hbWUiOiJ1c2VyMSIsImVtYWlsIjoidXNlcjFAZW1haWwuY29tIiwiaWF0IjoxNzA0MDcyNTI3LCJleHAiOjE3MDQxNTg5Mjd9.LU2zrcjrIwp-cCNtTcY18u4oezMLty55Ta07Q51kjEA"
+}
+
+### logout
+POST http://localhost:3333/auth/logout
