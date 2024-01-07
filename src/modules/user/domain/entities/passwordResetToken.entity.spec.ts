@@ -1,6 +1,6 @@
 import { PasswordResetTokenEntity } from './passwordResetToken.entity';
 
-describe('User class', () => {
+describe('Password Reset class', () => {
   let passwordReset: PasswordResetTokenEntity;
   let passwordResetProps: any;
 

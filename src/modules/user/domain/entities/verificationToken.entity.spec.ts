@@ -1,6 +1,6 @@
 import { VerificationTokenEntity } from './verificationToken.entity';
 
-describe('User class', () => {
+describe('Verification Token class', () => {
   let verificationToken: VerificationTokenEntity;
   let verificationTokenProps: any;
 

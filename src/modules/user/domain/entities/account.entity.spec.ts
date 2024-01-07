@@ -1,6 +1,6 @@
 import { AccountEntity } from './account.entity';
 
-describe('User class', () => {
+describe('Account class', () => {
   let account: AccountEntity;
   let accountProps: any;
 
