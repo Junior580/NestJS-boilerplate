@@ -34,6 +34,11 @@ export class AuthService implements Service<Input, Output> {
       );
     }
 
+    if (!user.emailVerified) {
+      const verificationToken = await generateVerificationToken(
+        user.email,
+      );
+
     const payload = { id: user._id, name: user.name, email: user.email };
 
     const access_token = await this.jwtService.signAsync(payload, {

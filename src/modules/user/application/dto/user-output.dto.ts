@@ -5,6 +5,10 @@ export type UserOutput = {
   name: string;
   email: string;
   password: string;
+  emailVerified: Date;
+  image: string;
+  role: 'ADMIN' | 'USER';
+  isTwoFactorEnabled: boolean;
   createdAt: Date;
 };
 

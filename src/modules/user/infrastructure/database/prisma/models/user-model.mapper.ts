@@ -5,9 +5,14 @@ import { User as UserPrisma } from '@prisma/client';
 export class UserModelMapper {
   static toEntity(model: UserPrisma) {
     const data = {
+      id: model.id,
       name: model.name,
       email: model.email,
       password: model.password,
+      emailVerified: model.emailVerified,
+      image: model.image,
+      role: model.role,
+      isTwoFactorEnabled: model.isTwoFactorEnabled,
       createdAt: model.createdAt,
     };
     try {

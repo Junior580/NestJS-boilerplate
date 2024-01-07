@@ -2,20 +2,14 @@ import { EntityValidationError } from '../../../../shared/domain/errors/validati
 import { Entity } from '../../../../shared/domain/entities/entity';
 import { UserValidatorFactory } from '../validators/user.validator';
 
-enum UserRole {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-}
 export interface UserProps {
   name: string;
   email: string;
   password: string;
   emailVerified?: Date;
   image?: string;
-  role: UserRole;
-  accounts: string[]; //ajustar o tipo para entity accounts
+  role: 'ADMIN' | 'USER';
   isTwoFactorEnabled: boolean;
-  twoFactorConfirmation?: string[]; //ajustar o tipo para entity  twoFactorConfirmation
 }
 
 export class UserEntity extends Entity<UserProps> {
@@ -62,23 +56,12 @@ export class UserEntity extends Entity<UserProps> {
     return this.props.image;
   }
 
-  get role(): UserRole {
+  get role(): 'ADMIN' | 'USER' {
     return this.props.role;
-  }
-
-  get accounts(): string[] {
-    return this.props.accounts;
   }
 
   get isTwoFactorEnabled(): boolean {
     return this.props.isTwoFactorEnabled;
-  }
-
-  get twoFactorConfirmation(): string[] {
-    if (!this.props.twoFactorConfirmation) {
-      throw new Error('No twoFactorConfirmation setted');
-    }
-    return this.props.twoFactorConfirmation;
   }
 
   private set password(value: string) {

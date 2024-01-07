@@ -16,12 +16,7 @@ describe('User class', () => {
       emailVerified,
       image: 'string',
       role: 'UserRole',
-      accounts: ['account1', 'account2'],
       isTwoFactorEnabled: true,
-      twoFactorConfirmation: [
-        'twoFactorConfirmation1',
-        'twoFactorConfirmation',
-      ],
     };
 
     userProps = userProps1;
@@ -50,14 +45,9 @@ describe('User class', () => {
   it('should have correct role', () => {
     expect(user.role).toBe(userProps.role);
   });
-  it('should have correct accounts', () => {
-    expect(user.accounts).toBe(userProps.accounts);
-  });
+
   it('should have correct isTwoFactorEnabled', () => {
     expect(user.isTwoFactorEnabled).toBe(userProps.isTwoFactorEnabled);
-  });
-  it('should have correct twoFactorConfirmation', () => {
-    expect(user.twoFactorConfirmation).toBe(userProps.twoFactorConfirmation);
   });
 
   it('constructor method', () => {
@@ -68,11 +58,7 @@ describe('User class', () => {
     expect(user.props.emailVerified).toBe(userProps.emailVerified);
     expect(user.props.image).toBe(userProps.image);
     expect(user.props.role).toBe(userProps.role);
-    expect(user.props.accounts).toBe(userProps.accounts);
     expect(user.props.isTwoFactorEnabled).toBe(userProps.isTwoFactorEnabled);
-    expect(user.props.twoFactorConfirmation).toBe(
-      userProps.twoFactorConfirmation,
-    );
 
     expect(user.createdAt).toBeInstanceOf(Date);
   });
@@ -113,23 +99,9 @@ describe('User class', () => {
     expect(typeof user.props.role).toBe('string');
   });
 
-  it('getter of accounts field', () => {
-    expect(user.props.accounts).toBeDefined();
-    expect(user.props.accounts).toEqual(userProps.accounts);
-    expect(Array.isArray(user.props.accounts)).toBe(true);
-  });
-
   it('getter of isTwoFactorEnabled field', () => {
     expect(user.props.isTwoFactorEnabled).toBeDefined();
     expect(user.props.isTwoFactorEnabled).toEqual(userProps.isTwoFactorEnabled);
     expect(typeof user.props.isTwoFactorEnabled).toBe('boolean');
-  });
-
-  it('getter of twoFactorConfirmation field', () => {
-    expect(user.props.twoFactorConfirmation).toBeDefined();
-    expect(user.props.twoFactorConfirmation).toEqual(
-      userProps.twoFactorConfirmation,
-    );
-    expect(Array.isArray(user.props.twoFactorConfirmation)).toBe(true);
   });
 });
