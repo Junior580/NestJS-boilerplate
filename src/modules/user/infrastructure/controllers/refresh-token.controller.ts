@@ -1,7 +1,7 @@
-import { RefreshAuthDto } from '@modules/user/application/dto/refresh-token-output.dto';
 import { RefreshTokenService } from '@modules/user/application/services/refresh-token.service';
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { FastifyReply } from 'fastify';
+import { RefreshTokenDto } from '../dto/refresh-token.dto';
 
 @Controller('auth/refresh')
 export class RefreshTokenController {
@@ -9,11 +9,11 @@ export class RefreshTokenController {
 
   @Post()
   async authRefresh(
-    @Body() refreshAuthDto: RefreshAuthDto,
+    @Body() refreshAuthDto: RefreshTokenDto,
     @Res({ passthrough: true }) response: FastifyReply,
   ) {
     const { access_token, refresh_token } =
-      await this.refreshTokenService.execute(refreshAuthDto.refresh_token);
+      await this.refreshTokenService.execute(refreshAuthDto);
 
     response.clearCookie('@auth');
     response.clearCookie('@refresh');

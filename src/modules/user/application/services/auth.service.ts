@@ -1,18 +1,20 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
-import { AuthDto } from '../dto/auth-output.dto';
 import { HashProvider } from '@shared/application/providers/hash-provider';
 import { JwtService } from '@nestjs/jwt';
 import { Service } from '@shared/application/services';
 import { UserRepository } from '@modules/user/domain/repositories/user.repository';
 import { VerificationTokenService } from './verification-token.service';
 
-type Input = AuthDto;
+export type AuthInput = {
+  email: string;
+  password: string;
+};
 
 type Output = { access_token: string; refresh_token: string };
 
 @Injectable()
-export class AuthService implements Service<Input, Output> {
+export class AuthService implements Service<AuthInput, Output> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
@@ -20,7 +22,7 @@ export class AuthService implements Service<Input, Output> {
     private readonly verificationTokenService: VerificationTokenService,
   ) {}
 
-  async execute(props: Input) {
+  async execute(props: AuthInput) {
     const { email, password } = props;
 
     const user = await this.userRepository.findByEmail(email);

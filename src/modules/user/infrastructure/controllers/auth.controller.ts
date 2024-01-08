@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Res } from '@nestjs/common';
 import { AuthService } from '../../application/services/auth.service';
-import { AuthDto } from '../../application/dto/auth-output.dto';
+import { AuthDto } from '../dto/auth.dto';
 import { FastifyReply } from 'fastify';
 @Controller('auth')
 export class AuthController {
