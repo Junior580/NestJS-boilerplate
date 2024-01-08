@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { HashProvider } from '@shared/application/providers/hash-provider';
+import { HashProvider } from '@shared/application/providers/hashProvider/hash-provider';
 import { UserEntity } from '../../domain/entities/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserOutput, UserOutputMapper } from '../dto/user-output.dto';
@@ -42,6 +42,9 @@ export class UserService implements Service<UserInput, Output> {
     );
 
     await this.userRepository.insert(entity);
+
+    // generate confirmation token
+    // send Verification Email
 
     return UserOutputMapper.toOutput(entity);
   }

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UserService } from '@modules/user/application/services/create-user.service';
 import { CreateUserController } from './infrastructure/controllers/create-user.controller';
-import { HashProvider } from '../../shared/application/providers/hash-provider';
+import { HashProvider } from '../../shared/application/providers/hashProvider/hash-provider';
 import { JwtService } from '@nestjs/jwt';
 import { AuthController } from './infrastructure/controllers/auth.controller';
 import { AuthService } from '@modules/user/application/services/auth.service';

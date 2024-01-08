@@ -1,4 +1,4 @@
-import SendMailDTO from '../mail-provider';
+import SendMailDTO from '../dtos/SendMailDTO';
 
 export default interface MailProvider {
   sendMailMessage({
