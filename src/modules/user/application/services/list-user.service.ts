@@ -11,7 +11,7 @@ import {
 import { SearchInput } from '@shared/application/dto/search-input';
 import { UserOutput, UserOutputMapper } from '../dto/user-output.dto';
 
-type Input = SearchInput;
+export type ListUserInput = SearchInput;
 
 type Output = PaginationOutput<UserOutput>;
 
@@ -19,7 +19,7 @@ type Output = PaginationOutput<UserOutput>;
 export class ListUserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async execute(input: Input) {
+  async execute(input: ListUserInput) {
     const params = new UserSearchParams(input);
     const searchResult = await this.userRepository.search(params);
     return this.toOutput(searchResult);

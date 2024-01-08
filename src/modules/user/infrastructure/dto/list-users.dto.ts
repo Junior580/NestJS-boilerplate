@@ -1,8 +1,8 @@
 import { SortDirection } from '@shared/domain/repositories/searchable-repository-contracts';
 import { IsOptional } from 'class-validator';
-import { SearchInput } from '@shared/application/dto/search-input';
+import { ListUserInput } from '@modules/user/application/services/list-user.service';
 
-export class ListUsersDto implements SearchInput {
+export class ListUsersDto implements ListUserInput {
   @IsOptional()
   page?: number;
 
