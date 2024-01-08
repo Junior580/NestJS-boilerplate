@@ -1,4 +1,4 @@
-import { RefreshAuthDto } from '@modules/user/application/dto/refresh-token.dto';
+import { RefreshAuthDto } from '@modules/user/application/dto/refresh-token-output.dto';
 import { RefreshTokenService } from '@modules/user/application/services/refresh-token.service';
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { FastifyReply } from 'fastify';

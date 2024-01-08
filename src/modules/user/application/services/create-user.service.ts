@@ -4,21 +4,28 @@ import { UserEntity } from '../../domain/entities/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserOutput, UserOutputMapper } from '../dto/user-output.dto';
 import { Service } from '@shared/application/services';
-import { SignupDto } from '@modules/user/infrastructure/dto/signup.dto';
 
-type Input = SignupDto;
+export type UserInput = {
+  name: string;
+  email: string;
+  password: string;
+  emailVerified: Date;
+  image: string;
+  role: 'ADMIN' | 'USER';
+  isTwoFactorEnabled: boolean;
+};
 
 type Output = UserOutput;
 
 @Injectable()
-export class UserService implements Service<Input, Output> {
+export class UserService implements Service<UserInput, Output> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly hashProvider: HashProvider,
   ) {}
 
-  async execute(input: Input) {
-    const { email, name, password, emailVerified } = input;
+  async execute(input: UserInput) {
+    const { email, name, password } = input;
 
     if (!email || !name || !password) {
       throw new Error('Input data not provided');
@@ -27,12 +34,10 @@ export class UserService implements Service<Input, Output> {
     await this.userRepository.emailExists(email);
 
     const hashPassword = await this.hashProvider.generateHash(password);
-    const DateEmailVerified = new Date(emailVerified);
 
     const entity = new UserEntity(
       Object.assign(input, {
         password: hashPassword,
-        emailVerified: DateEmailVerified,
       }),
     );
 

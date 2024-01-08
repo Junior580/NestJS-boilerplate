@@ -4,7 +4,7 @@ import { Service } from '@shared/application/services';
 import {
   VerificationTokenMapper,
   VerificationTokenOutput,
-} from '../dto/verification-token.dto';
+} from '../dto/verification-token-output.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { VerificationTokenEntity } from '@modules/user/domain/entities/verificationToken.entity';
 

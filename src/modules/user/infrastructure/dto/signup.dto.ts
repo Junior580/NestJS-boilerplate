@@ -1,13 +1,14 @@
+import { UserInput } from '@modules/user/application/services/create-user.service';
 import {
   IsBoolean,
-  // IsDate,
+  IsDate,
   IsEmail,
   IsNotEmpty,
   IsOptional,
   IsString,
 } from 'class-validator';
 
-export class SignupDto {
+export class SignupDto implements UserInput {
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -21,9 +22,9 @@ export class SignupDto {
   @IsNotEmpty()
   password: string;
 
-  @IsString()
+  @IsDate()
   @IsNotEmpty()
-  emailVerified: string;
+  emailVerified: Date;
 
   @IsString()
   @IsOptional()

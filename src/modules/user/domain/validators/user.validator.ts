@@ -1,7 +1,6 @@
 import { ClassValidatorFields } from '../../../../shared/domain/validators/class-validator-fields';
 import { UserProps } from '../entities/user.entity';
 import {
-  IsDate,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -27,7 +26,6 @@ export class UserRules {
   @IsNotEmpty()
   password: string;
 
-  @IsDate()
   @IsNotEmpty()
   emailVerified: Date;
 
