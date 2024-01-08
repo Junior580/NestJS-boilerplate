@@ -4,12 +4,9 @@ import { UserEntity } from '../../domain/entities/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserOutput, UserOutputMapper } from '../dto/user-output.dto';
 import { Service } from '@shared/application/services';
+import { SignupDto } from '@modules/user/infrastructure/dto/signup.dto';
 
-type Input = {
-  name: string;
-  email: string;
-  password: string;
-};
+type Input = SignupDto;
 
 type Output = UserOutput;
 
@@ -21,7 +18,7 @@ export class UserService implements Service<Input, Output> {
   ) {}
 
   async execute(input: Input) {
-    const { email, name, password } = input;
+    const { email, name, password, emailVerified } = input;
 
     if (!email || !name || !password) {
       throw new Error('Input data not provided');
@@ -30,9 +27,13 @@ export class UserService implements Service<Input, Output> {
     await this.userRepository.emailExists(email);
 
     const hashPassword = await this.hashProvider.generateHash(password);
+    const DateEmailVerified = new Date(emailVerified);
 
     const entity = new UserEntity(
-      Object.assign(input, { password: hashPassword }),
+      Object.assign(input, {
+        password: hashPassword,
+        emailVerified: DateEmailVerified,
+      }),
     );
 
     await this.userRepository.insert(entity);

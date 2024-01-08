@@ -3,9 +3,13 @@ POST http://localhost:3333/user
 content-type: application/json
 
 {
-	"name":"user44",
-	"email":"user44@email.com",
-	"password":"teste123@"
+	"name":"user60",
+	"email":"user60@email.com",
+	"password":"teste123@",
+	"emailVerified": "2024-01-07T15:54:06.747Z",
+  "image": "url_img",
+  "role": "USER",
+  "isTwoFactorEnabled": false
 }
 
 
@@ -14,7 +18,7 @@ POST http://localhost:3333/auth
 content-type: application/json
 
 {
-	"email":"user1@email.com",
+	"email":"user60@email.com",
 	"password":"teste123@"
 }
 

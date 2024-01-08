@@ -8,7 +8,7 @@ type Output = { access_token: string; refresh_token: string };
 
 @Injectable()
 export class RefreshTokenService implements Service<Input, Output> {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly jwtService: JwtService) {}
   async execute(input: Input): Promise<Output> {
     try {
       await this.jwtService.verify(input, {

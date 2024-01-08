@@ -8,6 +8,7 @@ import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { UserModelMapper } from '../models/user-model.mapper';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { TwoFactorTokenModelMapper } from '../models/TwoFactorToken.mapper';
+import { TwoFactorTokenEntity } from '@modules/user/domain/entities/twoFactorToken.entity';
 
 @Injectable()
 export class UserPrismaRepository implements UserRepository {
@@ -133,5 +134,15 @@ export class UserPrismaRepository implements UserRepository {
     } catch (error) {
       throw new HttpException('User already exists', HttpStatus.NOT_FOUND);
     }
+  }
+
+  async createTwoFactorToken(entity: TwoFactorTokenEntity): Promise<void> {
+    await this.prismaService.twoFactorToken.create({
+      data: entity.toJSON(),
+    });
+  }
+
+  async deteleToken(id: string): Promise<void> {
+    id;
   }
 }

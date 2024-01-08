@@ -17,4 +17,6 @@ export interface UserRepository
   findByEmail(email: string): Promise<UserEntity | null>;
   emailExists(email: string): Promise<void>;
   getVerificationTokenByEmail(email: string): Promise<TwoFactorTokenEntity>;
+  createTwoFactorToken(entity: TwoFactorTokenEntity): Promise<void>;
+  deteleToken(id: string): Promise<void>;
 }

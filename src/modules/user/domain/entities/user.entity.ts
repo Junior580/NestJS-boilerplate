@@ -6,7 +6,7 @@ export interface UserProps {
   name: string;
   email: string;
   password: string;
-  emailVerified?: Date;
+  emailVerified: Date;
   image?: string;
   role: 'ADMIN' | 'USER';
   isTwoFactorEnabled: boolean;

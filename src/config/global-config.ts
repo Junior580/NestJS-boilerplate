@@ -1,4 +1,5 @@
 import { INestApplication } from '@nestjs/common';
+import { GeneralErrorFilter } from '@shared/infrastructure/http/exception-filters/general-exception.filter';
 import { HttpExceptionFilter } from '@shared/infrastructure/http/exception-filters/http-exception.filter';
 
 export function applyGlobalConfig(app: INestApplication) {
@@ -8,4 +9,5 @@ export function applyGlobalConfig(app: INestApplication) {
   });
 
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new GeneralErrorFilter());
 }

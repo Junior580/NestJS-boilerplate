@@ -14,6 +14,7 @@ import { ListUserController } from './infrastructure/controllers/list-user.contr
 import { LogoutController } from './infrastructure/controllers/logout.controller';
 import { RefreshTokenService } from './application/services/refresh-token.service';
 import { RefreshTokenController } from './infrastructure/controllers/refresh-token.controller';
+import { VerificationTokenService } from './application/services/verification-token.service';
 
 @Module({
   controllers: [
@@ -24,6 +25,7 @@ import { RefreshTokenController } from './infrastructure/controllers/refresh-tok
     RefreshTokenController,
   ],
   providers: [
+    RefreshTokenService,
     {
       provide: 'PrismaService',
       useClass: PrismaService,
@@ -39,6 +41,7 @@ import { RefreshTokenController } from './infrastructure/controllers/refresh-tok
       provide: 'HashProvider',
       useClass: BcryptjsHashProvider,
     },
+
     {
       provide: UserService,
       useFactory: (
@@ -50,15 +53,33 @@ import { RefreshTokenController } from './infrastructure/controllers/refresh-tok
       inject: ['UserRepository', 'HashProvider'],
     },
     {
+      provide: VerificationTokenService,
+      useFactory: (userRepository: UserRepository) => {
+        return new VerificationTokenService(userRepository);
+      },
+      inject: ['UserRepository'],
+    },
+    {
       provide: AuthService,
       useFactory: (
         userRepository: UserRepository,
         jwtService: JwtService,
         hashProvider: HashProvider,
+        verificationTokenService: VerificationTokenService,
       ) => {
-        return new AuthService(userRepository, jwtService, hashProvider);
+        return new AuthService(
+          userRepository,
+          jwtService,
+          hashProvider,
+          verificationTokenService,
+        );
       },
-      inject: ['UserRepository', JwtService, 'HashProvider'],
+      inject: [
+        'UserRepository',
+        JwtService,
+        'HashProvider',
+        VerificationTokenService,
+      ],
     },
     {
       provide: ListUserService,
@@ -67,7 +88,6 @@ import { RefreshTokenController } from './infrastructure/controllers/refresh-tok
       },
       inject: ['UserRepository'],
     },
-    RefreshTokenService,
   ],
 })
 export class UserModule {}

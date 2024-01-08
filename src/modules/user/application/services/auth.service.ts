@@ -5,6 +5,7 @@ import { HashProvider } from '@shared/application/providers/hash-provider';
 import { JwtService } from '@nestjs/jwt';
 import { Service } from '@shared/application/services';
 import { UserRepository } from '@modules/user/domain/repositories/user.repository';
+import { VerificationTokenService } from './verification-token.service';
 
 type Input = AuthDto;
 
@@ -16,6 +17,7 @@ export class AuthService implements Service<Input, Output> {
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
     private readonly hashProvider: HashProvider,
+    private readonly verificationTokenService: VerificationTokenService,
   ) {}
 
   async execute(props: Input) {
@@ -35,9 +37,17 @@ export class AuthService implements Service<Input, Output> {
     }
 
     if (!user.emailVerified) {
-      const verificationToken = await generateVerificationToken(
+      const verificationToken = await this.verificationTokenService.execute(
         user.email,
       );
+
+      // await sendVerificationEmail(
+      //   verificationToken.email,
+      //   verificationToken.token,
+      // );
+
+      // return { success: "Confirmation email sent!" };
+    }
 
     const payload = { id: user._id, name: user.name, email: user.email };
 

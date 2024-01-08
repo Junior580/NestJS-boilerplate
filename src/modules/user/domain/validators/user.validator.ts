@@ -28,8 +28,8 @@ export class UserRules {
   password: string;
 
   @IsDate()
-  @IsOptional()
-  emailVerified?: Date;
+  @IsNotEmpty()
+  emailVerified: Date;
 
   @MaxLength(255)
   @IsString()
