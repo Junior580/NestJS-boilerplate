@@ -34,7 +34,7 @@ export class VerificationTokenService implements Service<Input, Output> {
 
     const entity = new VerificationTokenEntity(VerificationToken);
 
-    await this.userRepository.createTwoFactorToken(entity);
+    await this.userRepository.createVerificationToken(entity);
 
     return VerificationTokenMapper.toOutput(entity);
   }

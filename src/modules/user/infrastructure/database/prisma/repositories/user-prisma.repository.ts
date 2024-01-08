@@ -126,9 +126,10 @@ export class UserPrismaRepository implements UserRepository {
 
   async getVerificationTokenByEmail(email: string) {
     try {
-      const twoFactorToken = await this.prismaService.twoFactorToken.findFirst({
-        where: { email },
-      });
+      const twoFactorToken =
+        await this.prismaService.verificationToken.findFirst({
+          where: { email },
+        });
 
       return TwoFactorTokenModelMapper.toEntity(twoFactorToken);
     } catch (error) {
@@ -136,8 +137,8 @@ export class UserPrismaRepository implements UserRepository {
     }
   }
 
-  async createTwoFactorToken(entity: TwoFactorTokenEntity): Promise<void> {
-    await this.prismaService.twoFactorToken.create({
+  async createVerificationToken(entity: TwoFactorTokenEntity): Promise<void> {
+    await this.prismaService.verificationToken.create({
       data: entity.toJSON(),
     });
   }
