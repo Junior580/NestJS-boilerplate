@@ -4,6 +4,7 @@ import { UserEntity } from '../../domain/entities/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { UserOutput, UserOutputMapper } from '../dto/user-output.dto';
 import { Service } from '@shared/application/services';
+import { VerificationTokenService } from './verification-token.service';
 
 export type UserInput = {
   name: string;
@@ -22,6 +23,7 @@ export class UserService implements Service<UserInput, Output> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly hashProvider: HashProvider,
+    private readonly verificationTokenService: VerificationTokenService,
   ) {}
 
   async execute(input: UserInput) {
@@ -31,7 +33,7 @@ export class UserService implements Service<UserInput, Output> {
       throw new Error('Input data not provided');
     }
 
-    await this.userRepository.emailExists(email);
+    // await this.userRepository.emailExists(email);
 
     const hashPassword = await this.hashProvider.generateHash(password);
 
@@ -41,9 +43,10 @@ export class UserService implements Service<UserInput, Output> {
       }),
     );
 
-    await this.userRepository.insert(entity);
+    // await this.userRepository.insert(entity);
 
     // generate confirmation token
+    await this.verificationTokenService.execute('user1@email.com');
     // send Verification Email
 
     return UserOutputMapper.toOutput(entity);

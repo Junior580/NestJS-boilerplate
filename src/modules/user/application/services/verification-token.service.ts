@@ -1,5 +1,5 @@
 import { UserRepository } from '@modules/user/domain/repositories/user.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Service } from '@shared/application/services';
 import {
   VerificationTokenMapper,
@@ -16,6 +16,7 @@ type Output = VerificationTokenOutput;
 export class VerificationTokenService implements Service<Input, Output> {
   constructor(private readonly userRepository: UserRepository) {}
   async execute(email: Input): Promise<Output> {
+    Logger.log(`🚀 ~ Verification token service:${email}`);
     const token = uuidv4();
     const expires = new Date(new Date().getTime() + 5 * 60 * 1000);
 
@@ -31,10 +32,14 @@ export class VerificationTokenService implements Service<Input, Output> {
       email,
       expires,
     };
+    Logger.log(
+      `🚀 ~ Verification token service:${JSON.stringify(VerificationToken)}`,
+    );
 
     const entity = new VerificationTokenEntity(VerificationToken);
 
-    await this.userRepository.createVerificationToken(entity);
+    const verificationToken =
+      await this.userRepository.createVerificationToken(entity);
 
     return VerificationTokenMapper.toOutput(entity);
   }

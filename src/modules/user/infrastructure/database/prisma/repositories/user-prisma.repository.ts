@@ -7,8 +7,8 @@ import {
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { UserModelMapper } from '../models/user-model.mapper';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { TwoFactorTokenModelMapper } from '../models/TwoFactorToken.mapper';
 import { TwoFactorTokenEntity } from '@modules/user/domain/entities/twoFactorToken.entity';
+import { VerificationTokenModelMapper } from '../models/verification-token.model.mapper';
 
 @Injectable()
 export class UserPrismaRepository implements UserRepository {
@@ -95,9 +95,6 @@ export class UserPrismaRepository implements UserRepository {
   // async update(entity: UserEntity): Promise<void> {
   //   throw new Error('Method not implemented.');
   // }
-  // async delete(id: string): Promise<void> {
-  //   throw new Error('Method not implemented.');
-  // }
 
   async findByEmail(email: string): Promise<UserEntity | null> {
     try {
@@ -126,12 +123,12 @@ export class UserPrismaRepository implements UserRepository {
 
   async getVerificationTokenByEmail(email: string) {
     try {
-      const twoFactorToken =
+      const verificationToken =
         await this.prismaService.verificationToken.findFirst({
           where: { email },
         });
 
-      return TwoFactorTokenModelMapper.toEntity(twoFactorToken);
+      return VerificationTokenModelMapper.toEntity(verificationToken);
     } catch (error) {
       throw new HttpException('User already exists', HttpStatus.NOT_FOUND);
     }
@@ -144,6 +141,10 @@ export class UserPrismaRepository implements UserRepository {
   }
 
   async deteleToken(id: string): Promise<void> {
-    id;
+    await this.prismaService.verificationToken.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

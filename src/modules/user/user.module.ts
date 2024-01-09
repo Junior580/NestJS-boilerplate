@@ -47,10 +47,15 @@ import { VerificationTokenService } from './application/services/verification-to
       useFactory: (
         userRepository: UserRepository,
         hashProvider: HashProvider,
+        verificationTokenService: VerificationTokenService,
       ) => {
-        return new UserService(userRepository, hashProvider);
+        return new UserService(
+          userRepository,
+          hashProvider,
+          verificationTokenService,
+        );
       },
-      inject: ['UserRepository', 'HashProvider'],
+      inject: ['UserRepository', 'HashProvider', VerificationTokenService],
     },
     {
       provide: VerificationTokenService,
