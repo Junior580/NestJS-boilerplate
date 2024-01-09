@@ -1,5 +1,5 @@
 import { PrismaClient, TwoFactorToken } from '@prisma/client';
-import { TwoFactorTokenModelMapper } from './twoFactorToken.mapper';
+import { TwoFactorTokenModelMapper } from './twoFactorToken-model.mapper';
 import { TwoFactorTokenEntity } from '../../../../domain/entities/twoFactorToken.entity';
 
 describe('UserModelMapper integration tests', () => {

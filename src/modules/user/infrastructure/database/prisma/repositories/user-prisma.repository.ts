@@ -8,7 +8,8 @@ import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { UserModelMapper } from '../models/user-model.mapper';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { TwoFactorTokenEntity } from '@modules/user/domain/entities/twoFactorToken.entity';
-import { VerificationTokenModelMapper } from '../models/verification-token.model.mapper';
+import { VerificationTokenModelMapper } from '../models/verificationToken-model.mapper';
+import { VerificationTokenEntity } from '@modules/user/domain/entities/verificationToken.entity';
 
 @Injectable()
 export class UserPrismaRepository implements UserRepository {
@@ -134,10 +135,16 @@ export class UserPrismaRepository implements UserRepository {
     }
   }
 
-  async createVerificationToken(entity: TwoFactorTokenEntity): Promise<void> {
-    await this.prismaService.verificationToken.create({
-      data: entity.toJSON(),
-    });
+  async createVerificationToken(
+    entity: VerificationTokenEntity,
+  ): Promise<VerificationTokenEntity> {
+    const verificationToken = await this.prismaService.verificationToken.create(
+      {
+        data: entity.toJSON(),
+      },
+    );
+
+    return VerificationTokenModelMapper.toEntity(verificationToken);
   }
 
   async deteleToken(id: string): Promise<void> {

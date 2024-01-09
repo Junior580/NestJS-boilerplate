@@ -8,7 +8,7 @@ import { AuthService } from '@modules/user/application/services/auth.service';
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { UserPrismaRepository } from './infrastructure/database/prisma/repositories/user-prisma.repository';
 import { UserRepository } from './domain/repositories/user.repository';
-import { BcryptjsHashProvider } from './infrastructure/providers/hash-provider';
+import { BcryptjsHashProvider } from './infrastructure/providers/hashProvider/hash-provider';
 import { ListUserService } from './application/services/list-user.service';
 import { ListUserController } from './infrastructure/controllers/list-user.controller';
 import { LogoutController } from './infrastructure/controllers/logout.controller';

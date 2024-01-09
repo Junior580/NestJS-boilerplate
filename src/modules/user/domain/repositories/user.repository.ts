@@ -16,6 +16,8 @@ export interface UserRepository
   findByEmail(email: string): Promise<UserEntity | null>;
   emailExists(email: string): Promise<void>;
   getVerificationTokenByEmail(email: string): Promise<VerificationTokenEntity>;
-  createVerificationToken(entity: VerificationTokenEntity): Promise<void>;
+  createVerificationToken(
+    entity: VerificationTokenEntity,
+  ): Promise<VerificationTokenEntity>;
   deteleToken(id: string): Promise<void>;
 }
