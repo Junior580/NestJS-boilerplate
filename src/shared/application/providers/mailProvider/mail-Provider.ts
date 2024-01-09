@@ -1,28 +1,11 @@
-interface TemplateVariables {
-  [key: string]: string | number;
-}
-interface ParseMailTemplateDTO {
-  file: string;
-  variables: TemplateVariables;
-}
-
-interface MailContact {
-  name: string;
-  email: string;
-}
-
 export interface SendMailDTO {
-  to: MailContact;
-  from?: MailContact;
+  to: string[];
+  from: string;
   subject: string;
-  templateData: ParseMailTemplateDTO;
+  customLink: string;
+  customMessage: string;
 }
 
 export default interface MailProvider {
-  sendMailMessage({
-    to,
-    from,
-    subject,
-    templateData,
-  }: SendMailDTO): Promise<void>;
+  sendMailMessage({ to, from, subject }: SendMailDTO): Promise<void>;
 }

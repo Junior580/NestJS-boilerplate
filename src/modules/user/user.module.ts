@@ -15,6 +15,8 @@ import { LogoutController } from './infrastructure/controllers/logout.controller
 import { RefreshTokenService } from './application/services/refresh-token.service';
 import { RefreshTokenController } from './infrastructure/controllers/refresh-token.controller';
 import { VerificationTokenService } from './application/services/verification-token.service';
+import MailProvider from '@shared/application/providers/mailProvider/mail-Provider';
+import { ResendProvider } from './infrastructure/providers/mailProvider/resendMail-provider';
 
 @Module({
   controllers: [
@@ -27,6 +29,15 @@ import { VerificationTokenService } from './application/services/verification-to
   providers: [
     RefreshTokenService,
     {
+      provide: 'MailProvider',
+      useClass: ResendProvider,
+    },
+
+    {
+      provide: 'HashProvider',
+      useClass: BcryptjsHashProvider,
+    },
+    {
       provide: 'PrismaService',
       useClass: PrismaService,
     },
@@ -37,11 +48,6 @@ import { VerificationTokenService } from './application/services/verification-to
       },
       inject: ['PrismaService'],
     },
-    {
-      provide: 'HashProvider',
-      useClass: BcryptjsHashProvider,
-    },
-
     {
       provide: UserService,
       useFactory: (
@@ -59,10 +65,13 @@ import { VerificationTokenService } from './application/services/verification-to
     },
     {
       provide: VerificationTokenService,
-      useFactory: (userRepository: UserRepository) => {
-        return new VerificationTokenService(userRepository);
+      useFactory: (
+        userRepository: UserRepository,
+        mailProvider: MailProvider,
+      ) => {
+        return new VerificationTokenService(userRepository, mailProvider);
       },
-      inject: ['UserRepository'],
+      inject: ['UserRepository', 'MailProvider'],
     },
     {
       provide: AuthService,
