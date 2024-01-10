@@ -33,7 +33,7 @@ export class UserService implements Service<UserInput, Output> {
       throw new Error('Input data not provided');
     }
 
-    // await this.userRepository.emailExists(email);
+    await this.userRepository.emailExists(email);
 
     const hashPassword = await this.hashProvider.generateHash(password);
 
@@ -43,10 +43,10 @@ export class UserService implements Service<UserInput, Output> {
       }),
     );
 
-    // await this.userRepository.insert(entity);
+    await this.userRepository.insert(entity);
 
     // generate confirmation token
-    await this.verificationTokenService.execute('user1@email.com');
+    await this.verificationTokenService.execute(entity.email);
     // send Verification Email
 
     return UserOutputMapper.toOutput(entity);

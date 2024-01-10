@@ -7,7 +7,6 @@ import {
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { UserModelMapper } from '../models/user-model.mapper';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { TwoFactorTokenEntity } from '@modules/user/domain/entities/twoFactorToken.entity';
 import { VerificationTokenModelMapper } from '../models/verificationToken-model.mapper';
 import { VerificationTokenEntity } from '@modules/user/domain/entities/verificationToken.entity';
 
@@ -116,6 +115,7 @@ export class UserPrismaRepository implements UserRepository {
     const userExists = await this.prismaService.user.findFirst({
       where: { email },
     });
+    console.log(`🔥 ~ prisma Repository: ${userExists}`);
 
     if (userExists) {
       throw new HttpException('User already exists', HttpStatus.CONFLICT);
@@ -128,10 +128,13 @@ export class UserPrismaRepository implements UserRepository {
         await this.prismaService.verificationToken.findFirst({
           where: { email },
         });
+      console.log(
+        `🔥 ~ prisma Repository verificationToken: ${verificationToken}`,
+      );
 
       return VerificationTokenModelMapper.toEntity(verificationToken);
     } catch (error) {
-      throw new HttpException('User already exists', HttpStatus.NOT_FOUND);
+      return null;
     }
   }
 

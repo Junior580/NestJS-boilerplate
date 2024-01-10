@@ -41,11 +41,11 @@ export class VerificationTokenService implements Service<Input, Output> {
     const verificationToken =
       await this.userRepository.createVerificationToken(entity);
 
-    await this.mailProvider.sendMailMessage({
+    this.mailProvider.sendMailMessage({
       customLink: 'www.google.com',
       customMessage: 'bumbum',
-      from: 'kkkk@kkk.com',
-      to: ['junior.msm25@gmail.com'],
+      from: 'onboarding@resend.dev',
+      to: 'junior.msm25@gmail.com',
       subject: 'teste',
     });
 

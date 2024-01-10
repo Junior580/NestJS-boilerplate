@@ -6,20 +6,37 @@ export interface UserProps {
   name: string;
   email: string;
   password: string;
-  emailVerified: Date;
+  emailVerified?: Date;
   image?: string;
-  role: 'ADMIN' | 'USER';
-  isTwoFactorEnabled: boolean;
+  role?: 'ADMIN' | 'USER';
+  isTwoFactorEnabled?: boolean;
 }
 
 export class UserEntity extends Entity<UserProps> {
   constructor(
-    public readonly props: UserProps,
+    {
+      name,
+      email,
+      password,
+      emailVerified,
+      image,
+      role = 'USER',
+      isTwoFactorEnabled = false,
+    }: UserProps,
     id?: string,
     createdAt?: Date,
   ) {
-    UserEntity.validate(props);
-    super(props, id, createdAt);
+    const defaultProps: UserProps = {
+      name,
+      email,
+      password,
+      emailVerified,
+      image,
+      role,
+      isTwoFactorEnabled,
+    };
+    UserEntity.validate(defaultProps);
+    super(defaultProps, id, createdAt);
   }
 
   updatePassword(value: string): void {
@@ -43,16 +60,10 @@ export class UserEntity extends Entity<UserProps> {
   }
 
   get emailVerified(): Date {
-    if (!this.props.emailVerified) {
-      throw new Error('No emailVerified setted');
-    }
     return this.props.emailVerified;
   }
 
   get image(): string {
-    if (!this.props.image) {
-      throw new Error('No image setted');
-    }
     return this.props.image;
   }
 

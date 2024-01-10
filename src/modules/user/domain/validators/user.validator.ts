@@ -26,8 +26,8 @@ export class UserRules {
   @IsNotEmpty()
   password: string;
 
-  @IsNotEmpty()
-  emailVerified: Date;
+  @IsOptional()
+  emailVerified?: Date;
 
   @MaxLength(255)
   @IsString()
@@ -37,11 +37,11 @@ export class UserRules {
   @MaxLength(255)
   @IsString()
   @IsNotEmpty()
-  role: 'ADMIN' | 'USER';
+  role?: 'ADMIN' | 'USER';
 
   @IsBoolean()
   @IsNotEmpty()
-  isTwoFactorEnabled: boolean;
+  isTwoFactorEnabled?: boolean;
 
   constructor({
     email,

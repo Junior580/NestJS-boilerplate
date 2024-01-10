@@ -3,13 +3,9 @@ POST http://localhost:3333/user
 content-type: application/json
 
 {
-	"name":"user17",
-	"email":"user17@email.com",
-	"password":"teste123@",
-	"emailVerified": "2023-03-21T13:00:00.000Z",
-  "image": "url_img",
-  "role": "USER",
-  "isTwoFactorEnabled": false
+	"name":"user6",
+	"email":"user6@email.com",
+	"password":"teste123@"
 }
 
 

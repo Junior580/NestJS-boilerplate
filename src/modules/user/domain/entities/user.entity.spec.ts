@@ -15,13 +15,31 @@ describe('User class', () => {
       password: 'secretpassword',
       emailVerified,
       image: 'string',
-      role: 'UserRole',
+      role: 'USER',
       isTwoFactorEnabled: true,
     };
 
     userProps = userProps1;
 
     user = new UserEntity(userProps);
+  });
+
+  it('should be able to set optioonal fields', () => {
+    const partialUserProps = {
+      name: 'user1',
+      email: 'user1@example.com',
+      password: 'user1password',
+    };
+
+    const userOptionalFields = new UserEntity(partialUserProps);
+
+    expect(userOptionalFields.name).toBe(partialUserProps.name);
+    expect(userOptionalFields.email).toBe(partialUserProps.email);
+    expect(userOptionalFields.password).toBe(partialUserProps.password);
+    expect(userOptionalFields.emailVerified).toBe(undefined);
+    expect(userOptionalFields.image).toBe(undefined);
+    expect(userOptionalFields.role).toBe('USER');
+    expect(userOptionalFields.isTwoFactorEnabled).toBe(false);
   });
 
   it('should have correct name', () => {
