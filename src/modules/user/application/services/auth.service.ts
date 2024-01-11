@@ -6,6 +6,9 @@ import { Service } from '@shared/application/services';
 import { UserRepository } from '@modules/user/domain/repositories/user.repository';
 import { VerificationTokenService } from './verification-token.service';
 import MailProvider from '@shared/application/providers/mailProvider/mail-Provider';
+import { TwoFactorConfirmationEntity } from '@modules/user/domain/entities/twoFactorConfirmation.entity';
+import { TwoFactorTokenEntity } from '@modules/user/domain/entities/twoFactorToken.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 export type AuthInput = {
   email: string;
@@ -81,7 +84,40 @@ export class AuthService implements Service<AuthInput, Output> {
         if (hasExpired) {
           return { message: 'Code expired!' };
         }
+
+        const existingConfirmation =
+          await this.userRepository.getTwoFactorConfirmationByUserId(
+            existingUser.id,
+          );
+
+        if (existingConfirmation) {
+          await this.userRepository.deteleTwoFactorConfirmation(
+            existingConfirmation.id,
+          );
+        }
+        const twoFactorConfirmationEntity = new TwoFactorConfirmationEntity({
+          userId: existingUser.id,
+        });
+        await this.userRepository.createTwoFactorConfirmation(
+          twoFactorConfirmationEntity,
+        );
       } else {
+        const token = uuidv4();
+        const expires = new Date(new Date().getTime() + 5 * 60 * 1000);
+        const twoFactorTokenEntity = new TwoFactorTokenEntity({
+          token,
+          expires,
+          email: existingUser.email,
+        });
+        const twoFactorToken =
+          await this.userRepository.createTwoFactorToken(twoFactorTokenEntity);
+
+        this.mailProvider.sendMailMessage({
+          from: 'onboarding@resend.dev',
+          to: twoFactorToken.email, // alterar para verificationToken.email
+          subject: '2FA Code',
+          html: `<p>Your 2FA code: ${token}</p>`,
+        });
       }
     }
 

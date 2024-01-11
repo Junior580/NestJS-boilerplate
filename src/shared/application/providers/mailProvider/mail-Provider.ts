@@ -2,7 +2,7 @@ export interface SendMailDTO {
   to: string | string[];
   from: string;
   subject: string;
-  customLink: string;
+  html: string;
 }
 
 export default interface MailProvider {

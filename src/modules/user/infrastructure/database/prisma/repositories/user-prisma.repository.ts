@@ -12,6 +12,7 @@ import { VerificationTokenEntity } from '@modules/user/domain/entities/verificat
 import { TwoFactorTokenModelMapper } from '../models/twoFactorToken-model.mapper';
 import { TwoFactorConfirmationEntity } from '@modules/user/domain/entities/twoFactorConfirmation.entity';
 import { TwoFactorConfirmationModelMapper } from '../models/twoFactorConfirmation-model.mapper';
+import { TwoFactorTokenEntity } from '@modules/user/domain/entities/twoFactorToken.entity';
 
 @Injectable()
 export class UserPrismaRepository implements UserRepository {
@@ -211,5 +212,32 @@ export class UserPrismaRepository implements UserRepository {
     } catch {
       return null;
     }
+  }
+
+  async deteleTwoFactorConfirmation(id: string): Promise<void> {
+    await this.prismaService.twoFactorConfirmation.delete({
+      where: { id },
+    });
+  }
+
+  async createTwoFactorConfirmation(
+    entity: TwoFactorConfirmationEntity,
+  ): Promise<TwoFactorConfirmationEntity> {
+    const twoFactorConfirmation =
+      await this.prismaService.twoFactorConfirmation.create({
+        data: entity.toJSON(),
+      });
+
+    return TwoFactorConfirmationModelMapper.toEntity(twoFactorConfirmation);
+  }
+
+  async createTwoFactorToken(
+    entity: TwoFactorTokenEntity,
+  ): Promise<TwoFactorTokenEntity> {
+    const twoFactorToken = await this.prismaService.twoFactorToken.create({
+      data: entity.toJSON(),
+    });
+
+    return TwoFactorTokenModelMapper.toEntity(twoFactorToken);
   }
 }

@@ -55,7 +55,7 @@ export class UserService implements Service<UserInput, Output> {
     const confirmLink = `${domain}/auth/new-verification?token=${verficationToken.token}`;
 
     this.mailProvider.sendMailMessage({
-      customLink: confirmLink,
+      html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>`,
       from: 'onboarding@resend.dev',
       to: verficationToken.email, // alterar para verificationToken.email
       subject: 'Confirm your email',

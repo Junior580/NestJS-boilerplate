@@ -29,4 +29,11 @@ export interface UserRepository
   getTwoFactorConfirmationByUserId(
     userId: string,
   ): Promise<TwoFactorConfirmationEntity>;
+  deteleTwoFactorConfirmation(id: string): Promise<void>;
+  createTwoFactorConfirmation(
+    entity: TwoFactorConfirmationEntity,
+  ): Promise<TwoFactorConfirmationEntity>;
+  createTwoFactorToken(
+    entity: TwoFactorTokenEntity,
+  ): Promise<TwoFactorTokenEntity>;
 }
