@@ -3,8 +3,8 @@ POST http://localhost:3333/user
 content-type: application/json
 
 {
-	"name":"user9",
-	"email":"user9@email.com",
+	"name":"junior",
+	"email":"junior.msm25@gmail.com",
 	"password":"teste123@"
 }
 
@@ -19,7 +19,7 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:3333/auth/new-verification?token=ebf0f22b-d588-4e8e-84ae-bcd951cf9569
+GET  http://localhost:3333/auth/new-verification?token=b93c43ed-122a-4782-81bf-b8531e1d3782
 
 
 

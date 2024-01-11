@@ -16,15 +16,16 @@ type Output = VerificationTokenOutput;
 export class VerificationTokenService implements Service<Input, Output> {
   constructor(private readonly userRepository: UserRepository) {}
   async execute(email: Input): Promise<Output> {
-    const token = uuidv4();
-    const expires = new Date(new Date().getTime() + 5 * 60 * 1000);
-
     const existingToken =
       await this.userRepository.getVerificationTokenByEmail(email);
 
     if (existingToken) {
       await this.userRepository.deteleToken(existingToken.id);
     }
+
+    const token = uuidv4();
+
+    const expires = new Date(new Date().getTime() + 5 * 60 * 1000);
 
     const VerificationToken = {
       token,
