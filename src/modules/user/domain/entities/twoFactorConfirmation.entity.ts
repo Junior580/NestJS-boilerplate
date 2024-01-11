@@ -4,7 +4,6 @@ import { TwoFactorConfirmationFactory } from '../validators/twoFactorConfirmatio
 
 export interface TwoFactorConfirmationProps {
   userId: string;
-  user: string;
 }
 
 export class TwoFactorConfirmationEntity extends Entity<TwoFactorConfirmationProps> {
@@ -19,10 +18,6 @@ export class TwoFactorConfirmationEntity extends Entity<TwoFactorConfirmationPro
 
   get userId(): string {
     return this.props.userId;
-  }
-
-  get user(): string {
-    return this.props.user;
   }
 
   static validate(props: TwoFactorConfirmationProps) {

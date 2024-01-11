@@ -9,6 +9,9 @@ import { UserModelMapper } from '../models/user-model.mapper';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { VerificationTokenModelMapper } from '../models/verificationToken-model.mapper';
 import { VerificationTokenEntity } from '@modules/user/domain/entities/verificationToken.entity';
+import { TwoFactorTokenModelMapper } from '../models/twoFactorToken-model.mapper';
+import { TwoFactorConfirmationEntity } from '@modules/user/domain/entities/twoFactorConfirmation.entity';
+import { TwoFactorConfirmationModelMapper } from '../models/twoFactorConfirmation-model.mapper';
 
 @Injectable()
 export class UserPrismaRepository implements UserRepository {
@@ -146,8 +149,16 @@ export class UserPrismaRepository implements UserRepository {
     return VerificationTokenModelMapper.toEntity(verificationToken);
   }
 
-  async deteleToken(id: string): Promise<void> {
+  async deteleVerificationToken(id: string): Promise<void> {
     await this.prismaService.verificationToken.delete({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async deteleTwoFactorToken(id: string): Promise<void> {
+    await this.prismaService.twoFactorToken.delete({
       where: {
         id,
       },
@@ -172,5 +183,33 @@ export class UserPrismaRepository implements UserRepository {
       where: { id: userId },
       data: { emailVerified: new Date(), email: userEmail },
     });
+  }
+
+  async getTwoFactorTokenByEmail(email: string) {
+    try {
+      const verificationToken =
+        await this.prismaService.twoFactorToken.findFirst({
+          where: { email },
+        });
+
+      return TwoFactorTokenModelMapper.toEntity(verificationToken);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async getTwoFactorConfirmationByUserId(
+    userId: string,
+  ): Promise<TwoFactorConfirmationEntity> {
+    try {
+      const twoFactorConfirmation =
+        await this.prismaService.twoFactorConfirmation.findUnique({
+          where: { userId },
+        });
+
+      return TwoFactorConfirmationModelMapper.toEntity(twoFactorConfirmation);
+    } catch {
+      return null;
+    }
   }
 }

@@ -8,13 +8,8 @@ export class TwoFactorConfirmationRules {
   @IsNotEmpty()
   userId: string;
 
-  @MaxLength(255)
-  @IsString()
-  @IsNotEmpty()
-  user: string;
-
-  constructor({ userId, user }: TwoFactorConfirmationProps) {
-    Object.assign(this, { userId, user });
+  constructor({ userId }: TwoFactorConfirmationProps) {
+    Object.assign(this, { userId });
   }
 }
 

@@ -25,19 +25,10 @@ describe('Two Factor confirmation class', () => {
     );
   });
 
-  it('should have correct user', () => {
-    expect(twoFactorConfirmation.props.user).toBe(
-      twoFactorConfirmationProps.user,
-    );
-  });
-
   it('constructor method', () => {
     expect(TwoFactorConfirmationEntity.validate).toHaveBeenCalled();
     expect(twoFactorConfirmation.props.userId).toBe(
       twoFactorConfirmationProps.userId,
-    );
-    expect(twoFactorConfirmation.props.user).toBe(
-      twoFactorConfirmationProps.user,
     );
   });
 
@@ -47,13 +38,5 @@ describe('Two Factor confirmation class', () => {
       twoFactorConfirmationProps.userId,
     );
     expect(typeof twoFactorConfirmation.props.userId).toBe('string');
-  });
-
-  it('getter of user field', () => {
-    expect(twoFactorConfirmation.props.user).toBeDefined();
-    expect(twoFactorConfirmation.props.user).toEqual(
-      twoFactorConfirmationProps.user,
-    );
-    expect(typeof twoFactorConfirmation.props.user).toBe('string');
   });
 });

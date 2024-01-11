@@ -5,6 +5,8 @@ import {
   SearchableRepositoryInterface,
 } from '@shared/domain/repositories/searchable-repository-contracts';
 import { VerificationTokenEntity } from '../entities/verificationToken.entity';
+import { TwoFactorTokenEntity } from '../entities/twoFactorToken.entity';
+import { TwoFactorConfirmationEntity } from '../entities/twoFactorConfirmation.entity';
 
 export type Filter = string;
 
@@ -19,7 +21,12 @@ export interface UserRepository
   createVerificationToken(
     entity: VerificationTokenEntity,
   ): Promise<VerificationTokenEntity>;
-  deteleToken(id: string): Promise<void>;
+  deteleVerificationToken(id: string): Promise<void>;
   getVerificationTokenByToken(token: string): Promise<VerificationTokenEntity>;
   updateUsererificationToken(userId: string, userEmail: string): Promise<void>;
+  getTwoFactorTokenByEmail(email: string): Promise<TwoFactorTokenEntity>;
+  deteleTwoFactorToken(id: string): Promise<void>;
+  getTwoFactorConfirmationByUserId(
+    userId: string,
+  ): Promise<TwoFactorConfirmationEntity>;
 }
