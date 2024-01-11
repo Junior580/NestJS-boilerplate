@@ -3,8 +3,8 @@ POST http://localhost:3333/user
 content-type: application/json
 
 {
-	"name":"user6",
-	"email":"user6@email.com",
+	"name":"user9",
+	"email":"user9@email.com",
 	"password":"teste123@"
 }
 
@@ -17,6 +17,11 @@ content-type: application/json
 	"email":"user2@email.com",
 	"password":"teste123@"
 }
+
+###
+POST http://localhost:3333/auth/new-verification?token=ebf0f22b-d588-4e8e-84ae-bcd951cf9569
+
+
 
 ### get orders
 GET http://localhost:3333/list-user

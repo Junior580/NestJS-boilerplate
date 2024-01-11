@@ -17,6 +17,8 @@ import { RefreshTokenController } from './infrastructure/controllers/refresh-tok
 import { VerificationTokenService } from './application/services/verification-token.service';
 import MailProvider from '@shared/application/providers/mailProvider/mail-Provider';
 import { ResendProvider } from './infrastructure/providers/mailProvider/resendMail-provider';
+import { NewVerificationController } from './infrastructure/controllers/new-verification.controller';
+import { NewVerificationService } from './application/services/new-verification.service';
 
 @Module({
   controllers: [
@@ -25,6 +27,7 @@ import { ResendProvider } from './infrastructure/providers/mailProvider/resendMa
     ListUserController,
     LogoutController,
     RefreshTokenController,
+    NewVerificationController,
   ],
   providers: [
     RefreshTokenService,
@@ -54,24 +57,28 @@ import { ResendProvider } from './infrastructure/providers/mailProvider/resendMa
         userRepository: UserRepository,
         hashProvider: HashProvider,
         verificationTokenService: VerificationTokenService,
+        mailProvider: MailProvider,
       ) => {
         return new UserService(
           userRepository,
           hashProvider,
           verificationTokenService,
+          mailProvider,
         );
       },
-      inject: ['UserRepository', 'HashProvider', VerificationTokenService],
+      inject: [
+        'UserRepository',
+        'HashProvider',
+        VerificationTokenService,
+        'MailProvider',
+      ],
     },
     {
       provide: VerificationTokenService,
-      useFactory: (
-        userRepository: UserRepository,
-        mailProvider: MailProvider,
-      ) => {
-        return new VerificationTokenService(userRepository, mailProvider);
+      useFactory: (userRepository: UserRepository) => {
+        return new VerificationTokenService(userRepository);
       },
-      inject: ['UserRepository', 'MailProvider'],
+      inject: ['UserRepository'],
     },
     {
       provide: AuthService,
@@ -99,6 +106,13 @@ import { ResendProvider } from './infrastructure/providers/mailProvider/resendMa
       provide: ListUserService,
       useFactory: (userRepository: UserRepository) => {
         return new ListUserService(userRepository);
+      },
+      inject: ['UserRepository'],
+    },
+    {
+      provide: NewVerificationService,
+      useFactory: (userRepository: UserRepository) => {
+        return new NewVerificationService(userRepository);
       },
       inject: ['UserRepository'],
     },

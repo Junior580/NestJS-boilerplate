@@ -20,4 +20,6 @@ export interface UserRepository
     entity: VerificationTokenEntity,
   ): Promise<VerificationTokenEntity>;
   deteleToken(id: string): Promise<void>;
+  getVerificationTokenByToken(token: string): Promise<VerificationTokenEntity>;
+  updateUsererificationToken(userId: string, userEmail: string): Promise<void>;
 }

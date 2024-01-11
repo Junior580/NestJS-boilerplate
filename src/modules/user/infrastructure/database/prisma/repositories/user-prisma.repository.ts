@@ -115,10 +115,9 @@ export class UserPrismaRepository implements UserRepository {
     const userExists = await this.prismaService.user.findFirst({
       where: { email },
     });
-    console.log(`🔥 ~ prisma Repository: ${userExists}`);
 
     if (userExists) {
-      throw new HttpException('User already exists', HttpStatus.CONFLICT);
+      throw new HttpException('Email already in use!', HttpStatus.CONFLICT);
     }
   }
 
@@ -128,9 +127,6 @@ export class UserPrismaRepository implements UserRepository {
         await this.prismaService.verificationToken.findFirst({
           where: { email },
         });
-      console.log(
-        `🔥 ~ prisma Repository verificationToken: ${verificationToken}`,
-      );
 
       return VerificationTokenModelMapper.toEntity(verificationToken);
     } catch (error) {
@@ -155,6 +151,26 @@ export class UserPrismaRepository implements UserRepository {
       where: {
         id,
       },
+    });
+  }
+
+  async getVerificationTokenByToken(token: string) {
+    try {
+      const verificationToken =
+        await this.prismaService.verificationToken.findUnique({
+          where: { token },
+        });
+
+      return VerificationTokenModelMapper.toEntity(verificationToken);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async updateUsererificationToken(userId: string, userEmail: string) {
+    await this.prismaService.user.update({
+      where: { id: userId },
+      data: { emailVerified: new Date(), email: userEmail },
     });
   }
 }

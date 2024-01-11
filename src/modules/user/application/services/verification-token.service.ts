@@ -7,7 +7,6 @@ import {
 } from '../dto/verification-token-output.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { VerificationTokenEntity } from '@modules/user/domain/entities/verificationToken.entity';
-import MailProvider from '@shared/application/providers/mailProvider/mail-Provider';
 
 type Input = string;
 
@@ -15,10 +14,7 @@ type Output = VerificationTokenOutput;
 
 @Injectable()
 export class VerificationTokenService implements Service<Input, Output> {
-  constructor(
-    private readonly userRepository: UserRepository,
-    private readonly mailProvider: MailProvider,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
   async execute(email: Input): Promise<Output> {
     const token = uuidv4();
     const expires = new Date(new Date().getTime() + 5 * 60 * 1000);
@@ -40,14 +36,6 @@ export class VerificationTokenService implements Service<Input, Output> {
 
     const verificationToken =
       await this.userRepository.createVerificationToken(entity);
-
-    this.mailProvider.sendMailMessage({
-      customLink: 'www.google.com',
-      customMessage: 'bumbum',
-      from: 'onboarding@resend.dev',
-      to: 'junior.msm25@gmail.com',
-      subject: 'teste',
-    });
 
     return VerificationTokenMapper.toOutput(verificationToken);
   }

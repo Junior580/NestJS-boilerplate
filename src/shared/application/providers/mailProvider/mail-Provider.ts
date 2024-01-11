@@ -3,7 +3,6 @@ export interface SendMailDTO {
   from: string;
   subject: string;
   customLink: string;
-  customMessage: string;
 }
 
 export default interface MailProvider {
