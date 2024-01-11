@@ -20,7 +20,7 @@ export class VerificationTokenService implements Service<Input, Output> {
       await this.userRepository.getVerificationTokenByEmail(email);
 
     if (existingToken) {
-      await this.userRepository.deteleVerificationToken(existingToken.id);
+      await this.userRepository.deleteVerificationToken(existingToken.id);
     }
 
     const token = uuidv4();

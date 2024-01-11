@@ -87,12 +87,14 @@ import { NewVerificationService } from './application/services/new-verification.
         jwtService: JwtService,
         hashProvider: HashProvider,
         verificationTokenService: VerificationTokenService,
+        mailProvider: MailProvider,
       ) => {
         return new AuthService(
           userRepository,
           jwtService,
           hashProvider,
           verificationTokenService,
+          mailProvider,
         );
       },
       inject: [
@@ -100,6 +102,7 @@ import { NewVerificationService } from './application/services/new-verification.
         JwtService,
         'HashProvider',
         VerificationTokenService,
+        'MailProvider',
       ],
     },
     {

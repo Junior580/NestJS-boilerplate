@@ -69,10 +69,6 @@ export class UserPrismaRepository implements UserRepository {
     });
   }
 
-  // async findById(id: string): Promise<UserEntity> {
-  //   throw new Error('Method not implemented.');
-  // }
-
   async findAll(): Promise<UserEntity[]> {
     const models = await this.prismaService.user.findMany({
       select: {
@@ -96,10 +92,6 @@ export class UserPrismaRepository implements UserRepository {
     });
   }
 
-  // async update(entity: UserEntity): Promise<void> {
-  //   throw new Error('Method not implemented.');
-  // }
-
   async findByEmail(email: string): Promise<UserEntity | null> {
     try {
       const user = await this.prismaService.user.findFirst({
@@ -115,7 +107,7 @@ export class UserPrismaRepository implements UserRepository {
     }
   }
 
-  async emailExists(email: string) {
+  async userEmailExists(email: string) {
     const userExists = await this.prismaService.user.findFirst({
       where: { email },
     });
@@ -150,16 +142,8 @@ export class UserPrismaRepository implements UserRepository {
     return VerificationTokenModelMapper.toEntity(verificationToken);
   }
 
-  async deteleVerificationToken(id: string): Promise<void> {
+  async deleteVerificationToken(id: string): Promise<void> {
     await this.prismaService.verificationToken.delete({
-      where: {
-        id,
-      },
-    });
-  }
-
-  async deteleTwoFactorToken(id: string): Promise<void> {
-    await this.prismaService.twoFactorToken.delete({
       where: {
         id,
       },
@@ -179,7 +163,7 @@ export class UserPrismaRepository implements UserRepository {
     }
   }
 
-  async updateUsererificationToken(userId: string, userEmail: string) {
+  async updateUserVerificationToken(userId: string, userEmail: string) {
     await this.prismaService.user.update({
       where: { id: userId },
       data: { emailVerified: new Date(), email: userEmail },
@@ -199,6 +183,14 @@ export class UserPrismaRepository implements UserRepository {
     }
   }
 
+  async deleteTwoFactorToken(id: string): Promise<void> {
+    await this.prismaService.twoFactorToken.delete({
+      where: {
+        id,
+      },
+    });
+  }
+
   async getTwoFactorConfirmationByUserId(
     userId: string,
   ): Promise<TwoFactorConfirmationEntity> {
@@ -214,7 +206,7 @@ export class UserPrismaRepository implements UserRepository {
     }
   }
 
-  async deteleTwoFactorConfirmation(id: string): Promise<void> {
+  async deleteTwoFactorConfirmation(id: string): Promise<void> {
     await this.prismaService.twoFactorConfirmation.delete({
       where: { id },
     });

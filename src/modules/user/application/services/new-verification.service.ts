@@ -33,12 +33,12 @@ export class NewVerificationService {
       return { error: 'Email does not exist!' };
     }
 
-    await this.userRepository.updateUsererificationToken(
+    await this.userRepository.updateUserVerificationToken(
       existingUser.id,
       existingToken.email,
     );
 
-    await this.userRepository.deteleToken(existingToken.id);
+    await this.userRepository.deleteVerificationToken(existingToken.id);
 
     return { success: 'Email verified!' };
   }

@@ -35,7 +35,7 @@ export class UserService implements Service<UserInput, Output> {
       throw new Error('Invalid fields!');
     }
 
-    await this.userRepository.emailExists(email);
+    await this.userRepository.userEmailExists(email);
 
     const hashPassword = await this.hashProvider.generateHash(password);
 

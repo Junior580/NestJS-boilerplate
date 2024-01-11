@@ -55,7 +55,7 @@ export class AuthService implements Service<AuthInput, Output> {
       const confirmLink = `${domain}/auth/new-verification?token=${verficationToken.token}`;
 
       this.mailProvider.sendMailMessage({
-        customLink: confirmLink,
+        html: confirmLink,
         from: 'onboarding@resend.dev',
         to: verficationToken.email, // alterar para verificationToken.email
         subject: 'Confirm your email',
@@ -91,7 +91,7 @@ export class AuthService implements Service<AuthInput, Output> {
           );
 
         if (existingConfirmation) {
-          await this.userRepository.deteleTwoFactorConfirmation(
+          await this.userRepository.deleteTwoFactorConfirmation(
             existingConfirmation.id,
           );
         }
@@ -123,7 +123,11 @@ export class AuthService implements Service<AuthInput, Output> {
 
     //
 
-    const payload = { id: user._id, name: user.name, email: user.email };
+    const payload = {
+      id: existingUser.id,
+      name: existingUser.name,
+      email: existingUser.email,
+    };
 
     const access_token = await this.jwtService.signAsync(payload, {
       expiresIn: '24h',

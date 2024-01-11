@@ -1,38 +1,49 @@
-import { UserEntity } from '../entities/user.entity';
 import {
-  SearchParams as defaultSearchParams,
-  SearchResult as defaultSearchResult,
+  SearchParams as DefaultSearchParams,
+  SearchResult as DefaultSearchResult,
   SearchableRepositoryInterface,
 } from '@shared/domain/repositories/searchable-repository-contracts';
+
+import { UserEntity } from '../entities/user.entity';
 import { VerificationTokenEntity } from '../entities/verificationToken.entity';
 import { TwoFactorTokenEntity } from '../entities/twoFactorToken.entity';
 import { TwoFactorConfirmationEntity } from '../entities/twoFactorConfirmation.entity';
 
 export type Filter = string;
 
-export class UserSearchParams extends defaultSearchParams<Filter> {}
+export class UserSearchParams extends DefaultSearchParams<Filter> {}
 
-export class UserSearchResult extends defaultSearchResult<UserEntity, Filter> {}
+export class UserSearchResult extends DefaultSearchResult<UserEntity, Filter> {}
+
 export interface UserRepository
   extends SearchableRepositoryInterface<UserEntity> {
+  // Funções de busca (find) primeiro
   findByEmail(email: string): Promise<UserEntity | null>;
-  emailExists(email: string): Promise<void>;
+  userEmailExists(email: string): Promise<void>;
+
+  // Funções relacionadas à entidade VerificationTokenEntity
   getVerificationTokenByEmail(email: string): Promise<VerificationTokenEntity>;
   createVerificationToken(
     entity: VerificationTokenEntity,
   ): Promise<VerificationTokenEntity>;
-  deteleVerificationToken(id: string): Promise<void>;
+  deleteVerificationToken(id: string): Promise<void>;
   getVerificationTokenByToken(token: string): Promise<VerificationTokenEntity>;
-  updateUsererificationToken(userId: string, userEmail: string): Promise<void>;
+  updateUserVerificationToken(userId: string, userEmail: string): Promise<void>;
+
+  // Funções relacionadas à entidade TwoFactorTokenEntity
   getTwoFactorTokenByEmail(email: string): Promise<TwoFactorTokenEntity>;
-  deteleTwoFactorToken(id: string): Promise<void>;
+  deleteTwoFactorToken(id: string): Promise<void>;
+
+  // Funções relacionadas à entidade TwoFactorConfirmationEntity
   getTwoFactorConfirmationByUserId(
     userId: string,
   ): Promise<TwoFactorConfirmationEntity>;
-  deteleTwoFactorConfirmation(id: string): Promise<void>;
+  deleteTwoFactorConfirmation(id: string): Promise<void>;
   createTwoFactorConfirmation(
     entity: TwoFactorConfirmationEntity,
   ): Promise<TwoFactorConfirmationEntity>;
+
+  // Funções relacionadas à entidade TwoFactorTokenEntity
   createTwoFactorToken(
     entity: TwoFactorTokenEntity,
   ): Promise<TwoFactorTokenEntity>;
