@@ -50,16 +50,12 @@ export class UserService implements Service<UserInput, Output> {
     const verficationToken = await this.verificationTokenService.execute(
       entity.email,
     );
+    console.log(`🔥~ UserService !existingUser.emailVerified `);
 
-    const domain = 'http://localhost:3333';
-    const confirmLink = `${domain}/auth/new-verification?token=${verficationToken.token}`;
-
-    this.mailProvider.sendMailMessage({
-      html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>`,
-      from: 'onboarding@resend.dev',
-      to: verficationToken.email, // alterar para verificationToken.email
-      subject: 'Confirm your email',
-    });
+    this.mailProvider.sendVerificationEmail(
+      verficationToken.email,
+      verficationToken.token,
+    );
 
     return UserOutputMapper.toOutput(entity);
   }

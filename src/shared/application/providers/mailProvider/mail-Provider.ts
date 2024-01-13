@@ -6,5 +6,6 @@ export interface SendMailDTO {
 }
 
 export default interface MailProvider {
-  sendMailMessage({ to, from, subject }: SendMailDTO): void;
+  sendMailMessage({ to, from, subject }: SendMailDTO): Promise<void>;
+  sendVerificationEmail(email: string, token: string): Promise<void>;
 }

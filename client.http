@@ -3,9 +3,10 @@ POST http://localhost:3333/user
 content-type: application/json
 
 {
-	"name":"junior",
+	"name":"user2",
 	"email":"junior.msm25@gmail.com",
-	"password":"teste123@"
+	"password":"teste123@",
+	"isTwoFactorEnabled": true
 }
 
 
@@ -14,12 +15,13 @@ POST http://localhost:3333/auth
 content-type: application/json
 
 {
-	"email":"user2@email.com",
+		"email":"junior.msm25@gmail.com",
+
 	"password":"teste123@"
 }
 
 ###
-GET  http://localhost:3333/auth/new-verification?token=b93c43ed-122a-4782-81bf-b8531e1d3782
+GET  http://localhost:3333/auth/new-verification?token=5bd979ff-3245-4ba7-bd56-c659391a3470
 
 
 

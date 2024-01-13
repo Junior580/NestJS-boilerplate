@@ -1,4 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import crypto from 'crypto';
 
 import { HashProvider } from '@shared/application/providers/hashProvider/hash-provider';
 import { JwtService } from '@nestjs/jwt';
@@ -8,7 +9,6 @@ import { VerificationTokenService } from './verification-token.service';
 import MailProvider from '@shared/application/providers/mailProvider/mail-Provider';
 import { TwoFactorConfirmationEntity } from '@modules/user/domain/entities/twoFactorConfirmation.entity';
 import { TwoFactorTokenEntity } from '@modules/user/domain/entities/twoFactorToken.entity';
-import { v4 as uuidv4 } from 'uuid';
 
 export type AuthInput = {
   email: string;
@@ -30,9 +30,7 @@ export class AuthService implements Service<AuthInput, Output> {
     private readonly mailProvider: MailProvider,
   ) {}
 
-  async execute(props: AuthInput) {
-    const { email, password, code } = props;
-
+  async execute({ email, password, code }: AuthInput) {
     const existingUser = await this.userRepository.findByEmail(email);
 
     const passwordMatched = await this.hashProvider.compareHash(
@@ -46,82 +44,84 @@ export class AuthService implements Service<AuthInput, Output> {
       );
     }
 
-    //
     if (!existingUser.emailVerified) {
-      const verficationToken = await this.verificationTokenService.execute(
+      console.log(`🔥~ AuthService !existingUser.emailVerified `);
+
+      const verificationToken = await this.verificationTokenService.execute(
         existingUser.email,
       );
-      const domain = 'http://localhost:3333';
-      const confirmLink = `${domain}/auth/new-verification?token=${verficationToken.token}`;
 
-      this.mailProvider.sendMailMessage({
-        html: confirmLink,
-        from: 'onboarding@resend.dev',
-        to: verficationToken.email, // alterar para verificationToken.email
-        subject: 'Confirm your email',
-      });
+      await this.mailProvider.sendVerificationEmail(
+        verificationToken.email,
+        verificationToken.token,
+      );
 
       return { message: 'Confirmation email sent!' };
     }
 
-    if (existingUser.isTwoFactorEnabled && existingUser.email) {
-      if (code) {
-        const twoFactorToken =
-          await this.userRepository.getTwoFactorTokenByEmail(
-            existingUser.email,
-          );
+    // if (existingUser.isTwoFactorEnabled && existingUser.email) {
+    //   if (code) {
+    //     const twoFactorToken =
+    //       await this.userRepository.getTwoFactorTokenByEmail(
+    //         existingUser.email,
+    //       );
 
-        if (!twoFactorToken) {
-          return { message: 'Invalid code!' };
-        }
+    //     if (!twoFactorToken) {
+    //       return { message: 'Invalid code!' };
+    //     }
 
-        if (twoFactorToken.token !== code) {
-          return { message: 'Invalid code!' };
-        }
+    //     if (twoFactorToken.token !== code) {
+    //       return { message: 'Invalid code!' };
+    //     }
 
-        const hasExpired = new Date(twoFactorToken.expires) < new Date();
+    //     const hasExpired = new Date(twoFactorToken.expires) < new Date();
 
-        if (hasExpired) {
-          return { message: 'Code expired!' };
-        }
+    //     if (hasExpired) {
+    //       return { message: 'Code expired!' };
+    //     }
 
-        const existingConfirmation =
-          await this.userRepository.getTwoFactorConfirmationByUserId(
-            existingUser.id,
-          );
+    //     await this.userRepository.deleteTwoFactorToken(twoFactorToken.id);
 
-        if (existingConfirmation) {
-          await this.userRepository.deleteTwoFactorConfirmation(
-            existingConfirmation.id,
-          );
-        }
-        const twoFactorConfirmationEntity = new TwoFactorConfirmationEntity({
-          userId: existingUser.id,
-        });
-        await this.userRepository.createTwoFactorConfirmation(
-          twoFactorConfirmationEntity,
-        );
-      } else {
-        const token = uuidv4();
-        const expires = new Date(new Date().getTime() + 5 * 60 * 1000);
-        const twoFactorTokenEntity = new TwoFactorTokenEntity({
-          token,
-          expires,
-          email: existingUser.email,
-        });
-        const twoFactorToken =
-          await this.userRepository.createTwoFactorToken(twoFactorTokenEntity);
+    //     const existingConfirmation =
+    //       await this.userRepository.getTwoFactorConfirmationByUserId(
+    //         existingUser.id,
+    //       );
 
-        this.mailProvider.sendMailMessage({
-          from: 'onboarding@resend.dev',
-          to: twoFactorToken.email, // alterar para verificationToken.email
-          subject: '2FA Code',
-          html: `<p>Your 2FA code: ${token}</p>`,
-        });
-      }
-    }
+    //     if (existingConfirmation) {
+    //       await this.userRepository.deleteTwoFactorConfirmation(
+    //         existingConfirmation.id,
+    //       );
+    //     }
 
-    //
+    //     const twoFactorConfirmationEntity = new TwoFactorConfirmationEntity({
+    //       userId: existingUser.id,
+    //     });
+
+    //     await this.userRepository.createTwoFactorConfirmation(
+    //       twoFactorConfirmationEntity,
+    //     );
+    //   } else {
+    //     const twoFactorToken = await this.generateTwoFactorToken(email);
+    //     await this.sendTwoFactorTokenEmail(
+    //       twoFactorToken.email,
+    //       twoFactorToken.token,
+    //     );
+    //     return { message: 'twoFactor: true' };
+    //   }
+    // }
+
+    // if (existingUser.isTwoFactorEnabled) {
+    //   const twoFactorConfirmation =
+    //     await this.userRepository.getTwoFactorConfirmationByUserId(
+    //       existingUser.id,
+    //     );
+
+    //   if (!twoFactorConfirmation) return { message: 'false' };
+
+    //   await this.userRepository.deleteTwoFactorConfirmation(
+    //     twoFactorConfirmation.id,
+    //   );
+    // }
 
     const payload = {
       id: existingUser.id,
@@ -138,5 +138,37 @@ export class AuthService implements Service<AuthInput, Output> {
     });
 
     return { access_token, refresh_token };
+  }
+
+  private async generateTwoFactorToken(email: string) {
+    const token = crypto.randomInt(100_000, 1_000_000).toString();
+    const expires = new Date(new Date().getTime() + 5 * 60 * 1000);
+
+    const existingToken =
+      await this.userRepository.getTwoFactorTokenByEmail(email);
+
+    if (existingToken) {
+      await this.userRepository.deleteTwoFactorToken(existingToken.id);
+    }
+
+    const twoFactorTokenEntity = new TwoFactorTokenEntity({
+      token,
+      expires,
+      email,
+    });
+
+    const twoFactorToken =
+      await this.userRepository.createTwoFactorToken(twoFactorTokenEntity);
+
+    return twoFactorToken;
+  }
+
+  private async sendTwoFactorTokenEmail(email: string, token: string) {
+    this.mailProvider.sendMailMessage({
+      from: 'mail@auth-masterclass-tutorial.com',
+      to: email,
+      subject: '2FA Code',
+      html: `<p>Your 2FA code: ${token}</p>`,
+    });
   }
 }
