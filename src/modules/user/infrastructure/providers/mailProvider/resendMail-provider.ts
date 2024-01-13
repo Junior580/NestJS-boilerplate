@@ -30,7 +30,6 @@ export class ResendProvider implements MailProvider {
 
   async sendVerificationEmail(email: string, token: string): Promise<void> {
     try {
-      console.log(`🔥~ sendVerificationEmail ~ :${token}`);
       const domain = '';
       const confirmLink = `${domain}/auth/new-verification?token=${token}`;
 

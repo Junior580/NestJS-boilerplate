@@ -15,8 +15,7 @@ POST http://localhost:3333/auth
 content-type: application/json
 
 {
-		"email":"junior.msm25@gmail.com",
-
+	"email":"junior.msm25@gmail.com",
 	"password":"teste123@"
 }
 

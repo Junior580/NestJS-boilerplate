@@ -50,7 +50,6 @@ export class UserService implements Service<UserInput, Output> {
     const verficationToken = await this.verificationTokenService.execute(
       entity.email,
     );
-    console.log(`🔥~ UserService !existingUser.emailVerified `);
 
     this.mailProvider.sendVerificationEmail(
       verficationToken.email,

@@ -45,8 +45,6 @@ export class AuthService implements Service<AuthInput, Output> {
     }
 
     if (!existingUser.emailVerified) {
-      console.log(`🔥~ AuthService !existingUser.emailVerified `);
-
       const verificationToken = await this.verificationTokenService.execute(
         existingUser.email,
       );
