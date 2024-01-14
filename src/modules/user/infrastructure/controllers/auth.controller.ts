@@ -13,8 +13,13 @@ export class AuthController {
   ) {
     const { access_token, refresh_token } =
       await this.authService.execute(createAuthDto);
+
+    if (!access_token && !refresh_token)
+      return { message: '2FA Token enviado por email' };
+
     response.setCookie('@auth', access_token, { httpOnly: true });
     response.setCookie('@refresh', refresh_token, { httpOnly: true });
+
     return { success: 'ok', access_token, refresh_token };
   }
 }

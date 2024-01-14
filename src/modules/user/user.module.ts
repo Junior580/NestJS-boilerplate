@@ -19,6 +19,8 @@ import MailProvider from '@shared/application/providers/mailProvider/mail-Provid
 import { ResendProvider } from './infrastructure/providers/mailProvider/resendMail-provider';
 import { NewVerificationController } from './infrastructure/controllers/new-verification.controller';
 import { NewVerificationService } from './application/services/new-verification.service';
+import { TwoFactorAuthService } from './application/services/two-factor-auth.service';
+import { TwoFactorAuthController } from './infrastructure/controllers/two-factor-auth.controller';
 
 @Module({
   controllers: [
@@ -28,6 +30,7 @@ import { NewVerificationService } from './application/services/new-verification.
     LogoutController,
     RefreshTokenController,
     NewVerificationController,
+    TwoFactorAuthController,
   ],
   providers: [
     RefreshTokenService,
@@ -118,6 +121,13 @@ import { NewVerificationService } from './application/services/new-verification.
         return new NewVerificationService(userRepository);
       },
       inject: ['UserRepository'],
+    },
+    {
+      provide: TwoFactorAuthService,
+      useFactory: (userRepository: UserRepository, jwtService: JwtService) => {
+        return new TwoFactorAuthService(userRepository, jwtService);
+      },
+      inject: ['UserRepository', JwtService],
     },
   ],
 })

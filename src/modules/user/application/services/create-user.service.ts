@@ -51,6 +51,8 @@ export class UserService implements Service<UserInput, Output> {
       entity.email,
     );
 
+    console.log(`Verification token: ${JSON.stringify(verficationToken)}`);
+
     this.mailProvider.sendVerificationEmail(
       verficationToken.email,
       verficationToken.token,
