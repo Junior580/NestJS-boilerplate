@@ -39,12 +39,44 @@ export class UserEntity extends Entity<UserProps> {
     super(defaultProps, id, createdAt);
   }
 
+  updateName(value: string): void {
+    UserEntity.validate({
+      ...this.props,
+      name: value,
+    });
+    this.name = value;
+  }
+
+  updateEmail(value: string): void {
+    UserEntity.validate({
+      ...this.props,
+      email: value,
+    });
+    this.email = value;
+  }
+
   updatePassword(value: string): void {
     UserEntity.validate({
       ...this.props,
       password: value,
     });
     this.password = value;
+  }
+
+  updateRole(value: 'ADMIN' | 'USER'): void {
+    UserEntity.validate({
+      ...this.props,
+      role: value,
+    });
+    this.role = value;
+  }
+
+  updateIsTwoFactorEnabled(value: boolean): void {
+    UserEntity.validate({
+      ...this.props,
+      isTwoFactorEnabled: value,
+    });
+    this.isTwoFactorEnabled = value;
   }
 
   get name(): string {
@@ -75,8 +107,24 @@ export class UserEntity extends Entity<UserProps> {
     return this.props.isTwoFactorEnabled;
   }
 
+  private set name(value: string) {
+    this.props.name = value;
+  }
+
+  private set email(value: string) {
+    this.props.email = value;
+  }
+
   private set password(value: string) {
     this.props.password = value;
+  }
+
+  private set isTwoFactorEnabled(value: boolean) {
+    this.props.isTwoFactorEnabled = value;
+  }
+
+  private set role(value: 'ADMIN' | 'USER') {
+    this.props.role = value;
   }
 
   static validate(props: UserProps) {

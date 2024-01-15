@@ -122,4 +122,39 @@ describe('User class', () => {
     expect(user.props.isTwoFactorEnabled).toEqual(userProps.isTwoFactorEnabled);
     expect(typeof user.props.isTwoFactorEnabled).toBe('boolean');
   });
+
+  it('should update the name', () => {
+    const newName = 'New Name';
+    user.updateName(newName);
+    expect(user.props.name).toBe(newName);
+    expect(user.props.name).toBeDefined();
+  });
+
+  it('should update the email', () => {
+    const newEmail = 'New email';
+    user.updateEmail(newEmail);
+    expect(user.props.email).toBe(newEmail);
+    expect(user.props.email).toBeDefined();
+  });
+
+  it('should update the password', () => {
+    const newPassword = 'New password';
+    user.updatePassword(newPassword);
+    expect(user.props.password).toBe(newPassword);
+    expect(user.props.password).toBeDefined();
+  });
+
+  it('should update the role', () => {
+    const newRole = 'ADMIN';
+    user.updateRole(newRole);
+    expect(user.props.role).toBe(newRole);
+    expect(user.props.role).toBeDefined();
+  });
+
+  it('should update the 2fa', () => {
+    const newIs2fa = false;
+    user.updateIsTwoFactorEnabled(newIs2fa);
+    expect(user.props.isTwoFactorEnabled).toBe(newIs2fa);
+    expect(user.props.isTwoFactorEnabled).toBeDefined();
+  });
 });
