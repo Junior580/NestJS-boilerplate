@@ -7,10 +7,6 @@ import {
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { UserModelMapper } from '../models/user-model.mapper';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { TwoFactorTokenModelMapper } from '../models/twoFactorToken-model.mapper';
-import { TwoFactorConfirmationEntity } from '@modules/user/domain/entities/twoFactorConfirmation.entity';
-import { TwoFactorConfirmationModelMapper } from '../models/twoFactorConfirmation-model.mapper';
-import { TwoFactorTokenEntity } from '@modules/user/domain/entities/twoFactorToken.entity';
 
 @Injectable()
 export class UserPrismaRepository implements UserRepository {
@@ -113,47 +109,5 @@ export class UserPrismaRepository implements UserRepository {
     if (userExists) {
       throw new HttpException('Email already in use!', HttpStatus.CONFLICT);
     }
-  }
-
-  async getTwoFactorConfirmationByUserId(
-    userId: string,
-  ): Promise<TwoFactorConfirmationEntity> {
-    try {
-      const twoFactorConfirmation =
-        await this.prismaService.twoFactorConfirmation.findUnique({
-          where: { userId },
-        });
-
-      return TwoFactorConfirmationModelMapper.toEntity(twoFactorConfirmation);
-    } catch {
-      return null;
-    }
-  }
-
-  async deleteTwoFactorConfirmation(id: string): Promise<void> {
-    await this.prismaService.twoFactorConfirmation.delete({
-      where: { id },
-    });
-  }
-
-  async createTwoFactorConfirmation(
-    entity: TwoFactorConfirmationEntity,
-  ): Promise<TwoFactorConfirmationEntity> {
-    const twoFactorConfirmation =
-      await this.prismaService.twoFactorConfirmation.create({
-        data: entity.toJSON(),
-      });
-
-    return TwoFactorConfirmationModelMapper.toEntity(twoFactorConfirmation);
-  }
-
-  async createTwoFactorToken(
-    entity: TwoFactorTokenEntity,
-  ): Promise<TwoFactorTokenEntity> {
-    const twoFactorToken = await this.prismaService.twoFactorToken.create({
-      data: entity.toJSON(),
-    });
-
-    return TwoFactorTokenModelMapper.toEntity(twoFactorToken);
   }
 }
