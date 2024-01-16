@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Service } from '@shared/application/services';
 import { UserRepository } from '@modules/user/domain/repositories/user.repository';
+import { TwoFactorTokenRepository } from '@modules/user/domain/repositories/two-factor-token.repository';
 
 export type TwoFactorAuthInput = {
   email: string;
@@ -17,13 +18,13 @@ export class TwoFactorAuthService
   implements Service<TwoFactorAuthInput, Output>
 {
   constructor(
-    private readonly userRepository: UserRepository,
+    private readonly twoFactorTokenRepository: TwoFactorTokenRepository,
     private readonly jwtService: JwtService,
   ) {}
 
   async execute({ code, email }: TwoFactorAuthInput) {
     const existingToken =
-      await this.userRepository.getTwoFactorTokenByEmail(email);
+      await this.twoFactorTokenRepository.getTwoFactorTokenByEmail(email);
 
     if (existingToken.token !== code)
       return { message: 'Login failed, invalid code' };

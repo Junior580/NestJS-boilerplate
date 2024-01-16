@@ -1,4 +1,4 @@
-import { VerificationTokenEntity } from '@modules/user/domain/entities/verificationToken.entity';
+import { VerificationTokenEntity } from '@modules/user/domain/entities/verification-token.entity';
 
 export type VerificationTokenOutput = {
   email: string;

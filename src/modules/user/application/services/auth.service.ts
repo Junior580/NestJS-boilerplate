@@ -6,7 +6,8 @@ import { Service } from '@shared/application/services';
 import { UserRepository } from '@modules/user/domain/repositories/user.repository';
 import { VerificationTokenService } from './verification-token.service';
 import MailProvider from '@shared/application/providers/mailProvider/mail-Provider';
-import { TwoFactorTokenEntity } from '@modules/user/domain/entities/twoFactorToken.entity';
+import { TwoFactorTokenEntity } from '@modules/user/domain/entities/two-factor-token.entity';
+import { TwoFactorTokenRepository } from '@modules/user/domain/repositories/two-factor-token.repository';
 
 export type AuthInput = {
   email: string;
@@ -22,6 +23,7 @@ type Output =
 export class AuthService implements Service<AuthInput, Output> {
   constructor(
     private readonly userRepository: UserRepository,
+    private readonly twoFactorTokenRepository: TwoFactorTokenRepository,
     private readonly jwtService: JwtService,
     private readonly hashProvider: HashProvider,
     private readonly verificationTokenService: VerificationTokenService,
@@ -104,10 +106,12 @@ export class AuthService implements Service<AuthInput, Output> {
     const expires = new Date(new Date().getTime() + 5 * 60 * 1000);
 
     const existingToken =
-      await this.userRepository.getTwoFactorTokenByEmail(email);
+      await this.twoFactorTokenRepository.getTwoFactorTokenByEmail(email);
 
     if (existingToken) {
-      await this.userRepository.deleteTwoFactorToken(existingToken.id);
+      await this.twoFactorTokenRepository.deleteTwoFactorToken(
+        existingToken.id,
+      );
     }
 
     const twoFactorTokenEntity = new TwoFactorTokenEntity({
@@ -117,7 +121,9 @@ export class AuthService implements Service<AuthInput, Output> {
     });
 
     const twoFactorToken =
-      await this.userRepository.createTwoFactorToken(twoFactorTokenEntity);
+      await this.twoFactorTokenRepository.createTwoFactorToken(
+        twoFactorTokenEntity,
+      );
 
     return twoFactorToken;
   }

@@ -1,4 +1,3 @@
-import { UserRepository } from '@modules/user/domain/repositories/user.repository';
 import { Injectable } from '@nestjs/common';
 import { Service } from '@shared/application/services';
 import {
@@ -6,7 +5,8 @@ import {
   VerificationTokenOutput,
 } from '../dto/verification-token-output.dto';
 import { v4 as uuidv4 } from 'uuid';
-import { VerificationTokenEntity } from '@modules/user/domain/entities/verificationToken.entity';
+import { VerificationTokenEntity } from '@modules/user/domain/entities/verification-token.entity';
+import { VerificationTokenRepository } from '@modules/user/domain/repositories/verification-token.repository';
 
 type Input = string;
 
@@ -14,13 +14,17 @@ type Output = VerificationTokenOutput;
 
 @Injectable()
 export class VerificationTokenService implements Service<Input, Output> {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly verificationTokenRepository: VerificationTokenRepository,
+  ) {}
   async execute(email: Input): Promise<Output> {
     const existingToken =
-      await this.userRepository.getVerificationTokenByEmail(email);
+      await this.verificationTokenRepository.getVerificationTokenByEmail(email);
 
     if (existingToken) {
-      await this.userRepository.deleteVerificationToken(existingToken.id);
+      await this.verificationTokenRepository.deleteVerificationToken(
+        existingToken.id,
+      );
     }
 
     const token = uuidv4();
@@ -36,7 +40,7 @@ export class VerificationTokenService implements Service<Input, Output> {
     const entity = new VerificationTokenEntity(VerificationToken);
 
     const verificationToken =
-      await this.userRepository.createVerificationToken(entity);
+      await this.verificationTokenRepository.createVerificationToken(entity);
 
     return VerificationTokenMapper.toOutput(verificationToken);
   }

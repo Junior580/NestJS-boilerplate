@@ -1,9 +1,9 @@
 import { UserEntity } from '../../../domain/entities/user.entity';
 import { InMemoryRepository } from '../../../../../shared/domain/repositories/in-memory.repository';
 import { UserRepository } from '@modules/user/domain/repositories/user.repository';
-import { TwoFactorConfirmationEntity } from '@modules/user/domain/entities/twoFactorConfirmation.entity';
-import { TwoFactorTokenEntity } from '@modules/user/domain/entities/twoFactorToken.entity';
-import { VerificationTokenEntity } from '@modules/user/domain/entities/verificationToken.entity';
+import { TwoFactorConfirmationEntity } from '@modules/user/domain/entities/two-factor-confirmation.entity';
+import { TwoFactorTokenEntity } from '@modules/user/domain/entities/two-factor-token.entity';
+import { VerificationTokenEntity } from '@modules/user/domain/entities/verification-token.entity';
 import {
   SearchParams,
   SearchResult,
@@ -83,23 +83,7 @@ export class UserInMemoryRepository
     userId: string,
     userEmail: string,
   ): Promise<void> {
-    const userEntity = this.items.find((item) => item.id === userId);
-
-    if (!userEntity) {
-      throw new Error(`User not found with ID ${userId}`);
-    }
-
-    const verificationTokenEntity = new VerificationTokenEntity({
-      userId,
-      userEmail,
-      token: generateNewVerificationToken(),
-    });
-
-    this.verificationTokenEntity = this.verificationTokenEntity.map((item) =>
-      item.userId === userId ? verificationTokenEntity : item,
-    );
-
-    userEntity.verificationToken = verificationTokenEntity.token;
+    throw new Error('Method not implemented.');
   }
 
   getTwoFactorTokenByEmail(email: string): Promise<TwoFactorTokenEntity> {
