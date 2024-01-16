@@ -1,6 +1,6 @@
 import { EntityValidationError } from '../../../../shared/domain/errors/validation-error';
 import { Entity } from '../../../../shared/domain/entities/entity';
-import { VerificationTokenFactory } from '../validators/verificationToken.validator';
+import { VerificationTokenFactory } from '../validators/verification-token.validator';
 
 export interface VerificationTokenProps {
   email: string;

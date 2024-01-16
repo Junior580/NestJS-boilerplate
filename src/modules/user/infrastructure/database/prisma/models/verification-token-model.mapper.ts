@@ -1,6 +1,6 @@
 import { ValidationError } from '@shared/domain/errors/validation-error';
 import { VerificationToken as VerificationTokenPrisma } from '@prisma/client';
-import { VerificationTokenEntity } from '@modules/user/domain/entities/verificationToken.entity';
+import { VerificationTokenEntity } from '@modules/user/domain/entities/verification-token.entity';
 
 export class VerificationTokenModelMapper {
   static toEntity(model: VerificationTokenPrisma) {

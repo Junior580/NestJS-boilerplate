@@ -1,6 +1,6 @@
 import { PrismaClient, TwoFactorConfirmation } from '@prisma/client';
-import { TwoFactorConfirmationModelMapper } from './twoFactorConfirmation-model.mapper';
-import { TwoFactorConfirmationEntity } from '@modules/user/domain/entities/twoFactorConfirmation.entity';
+import { TwoFactorConfirmationModelMapper } from './two-factor-confirmation-model.mapper';
+import { TwoFactorConfirmationEntity } from '@modules/user/domain/entities/two-factor-confirmation.entity';
 
 describe('two factor confirmation integration tests', () => {
   let prismaService: PrismaClient;

@@ -1,6 +1,6 @@
 import { PrismaClient, TwoFactorToken } from '@prisma/client';
-import { TwoFactorTokenModelMapper } from './twoFactorToken-model.mapper';
-import { TwoFactorTokenEntity } from '../../../../domain/entities/twoFactorToken.entity';
+import { TwoFactorTokenModelMapper } from './two-factor-token-model.mapper';
+import { TwoFactorTokenEntity } from '../../../../domain/entities/two-factor-token.entity';
 
 describe('UserModelMapper integration tests', () => {
   let prismaService: PrismaClient;
@@ -16,13 +16,13 @@ describe('UserModelMapper integration tests', () => {
     await prismaService.user.deleteMany();
 
     const expires = new Date();
-    const createdAt = new Date();
+    const createdAt = new Date('2024-01-16T01:42:21.317Z');
     props = {
-      id: 'd4255494-f981-4d26-a2a1-35d3f5b8d36a',
+      id: 'idteste',
       email: 'a@a.com',
       token: 'Test name',
       expires: expires,
-      createdAt: createdAt,
+      createdAt: new Date(),
     };
   });
 

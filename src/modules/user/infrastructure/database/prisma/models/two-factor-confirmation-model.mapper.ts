@@ -1,4 +1,4 @@
-import { TwoFactorConfirmationEntity } from '@modules/user/domain/entities/twoFactorConfirmation.entity';
+import { TwoFactorConfirmationEntity } from '@modules/user/domain/entities/two-factor-confirmation.entity';
 import { ValidationError } from '@shared/domain/errors/validation-error';
 import { TwoFactorConfirmation as UserPrisma } from '@prisma/client';
 

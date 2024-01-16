@@ -1,4 +1,4 @@
-import { TwoFactorTokenEntity } from '@modules/user/domain/entities/twoFactorToken.entity';
+import { TwoFactorTokenEntity } from '@modules/user/domain/entities/two-factor-token.entity';
 import { ValidationError } from '@shared/domain/errors/validation-error';
 import { TwoFactorToken as UserPrisma } from '@prisma/client';
 

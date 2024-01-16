@@ -1,6 +1,6 @@
 import { PrismaClient, VerificationToken } from '@prisma/client';
-import { VerificationTokenModelMapper } from './verification-token.model.mapper';
-import { VerificationTokenEntity } from '../../../../domain/entities/verificationToken.entity';
+import { VerificationTokenModelMapper } from './verification-token-model.mapper';
+import { VerificationTokenEntity } from '../../../../domain/entities/verification-token.entity';
 
 describe('Verification token ModelMapper integration tests', () => {
   let prismaService: PrismaClient;
