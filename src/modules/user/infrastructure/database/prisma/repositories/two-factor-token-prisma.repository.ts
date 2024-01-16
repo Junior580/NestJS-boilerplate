@@ -3,7 +3,7 @@ import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { TwoFactorTokenModelMapper } from '../models/two-factor-token-model.mapper';
 import { TwoFactorTokenEntity } from '@modules/user/domain/entities/two-factor-token.entity';
 
-export class VerificationTokenPrismaRepository
+export class TwoFactorTokenPrismaRepository
   implements TwoFactorTokenRepository
 {
   constructor(private prismaService: PrismaService) {}
