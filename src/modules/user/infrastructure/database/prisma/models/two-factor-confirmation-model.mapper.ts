@@ -8,7 +8,7 @@ export class TwoFactorConfirmationModelMapper {
       userId: model.userId,
     };
     try {
-      return new TwoFactorConfirmationEntity(data, model.id);
+      return new TwoFactorConfirmationEntity(data, model.id, model.createdAt);
     } catch {
       throw new ValidationError('An entity not be loaded');
     }

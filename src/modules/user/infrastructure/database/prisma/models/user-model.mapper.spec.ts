@@ -14,12 +14,17 @@ describe('UserModelMapper integration tests', () => {
 
   beforeEach(async () => {
     await prismaService.user.deleteMany();
+
     props = {
       id: 'd4255494-f981-4d26-a2a1-35d3f5b8d36a',
       name: 'Test name',
       email: 'a@a.com',
       password: 'TestPassword123',
       createdAt: new Date(),
+      emailVerified: null,
+      image: null,
+      isTwoFactorEnabled: false,
+      role: 'USER',
     };
   });
 
