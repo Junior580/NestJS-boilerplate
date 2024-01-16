@@ -5,14 +5,12 @@ import { VerificationTokenEntity } from '@modules/user/domain/entities/verificat
 export class VerificationTokenModelMapper {
   static toEntity(model: VerificationTokenPrisma) {
     const data = {
-      id: model.id,
       email: model.email,
       token: model.token,
       expires: model.expires,
-      createdAt: model.createdAt,
     };
     try {
-      return new VerificationTokenEntity(data, model.id);
+      return new VerificationTokenEntity(data, model.id, model.createdAt);
     } catch {
       throw new ValidationError('An entity not be loaded');
     }
