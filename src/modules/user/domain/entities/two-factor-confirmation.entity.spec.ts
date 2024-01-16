@@ -1,4 +1,4 @@
-import { TwoFactorConfirmationEntity } from './twoFactorConfirmation.entity';
+import { TwoFactorConfirmationEntity } from './two-factor-confirmation.entity';
 
 describe('Two Factor confirmation class', () => {
   let twoFactorConfirmation: TwoFactorConfirmationEntity;

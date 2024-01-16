@@ -1,5 +1,5 @@
 import { MaxLength, IsString, IsDate, IsNotEmpty } from 'class-validator';
-import { VerificationTokenProps } from '../entities/verificationToken.entity';
+import { VerificationTokenProps } from '../entities/verification-token.entity';
 import { ClassValidatorFields } from '@shared/domain/validators/class-validator-fields';
 
 export class VerificationTokenRules {

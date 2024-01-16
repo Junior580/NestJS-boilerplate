@@ -1,6 +1,6 @@
 import { MaxLength, IsString, IsDate, IsNotEmpty } from 'class-validator';
 import { ClassValidatorFields } from '@shared/domain/validators/class-validator-fields';
-import { TwoFactorTokenProps } from '../entities/twoFactorToken.entity';
+import { TwoFactorTokenProps } from '../entities/two-factor-token.entity';
 
 export class TwoFactorTokenRules {
   @MaxLength(255)

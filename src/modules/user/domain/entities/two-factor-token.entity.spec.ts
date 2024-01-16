@@ -1,4 +1,4 @@
-import { TwoFactorTokenEntity } from './twoFactorToken.entity';
+import { TwoFactorTokenEntity } from './two-factor-token.entity';
 
 describe('Two Factor Token class', () => {
   let twoFactorToken: TwoFactorTokenEntity;

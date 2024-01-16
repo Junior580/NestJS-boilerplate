@@ -1,6 +1,6 @@
 import { MaxLength, IsString, IsDate, IsNotEmpty } from 'class-validator';
 import { ClassValidatorFields } from '@shared/domain/validators/class-validator-fields';
-import { PasswordResetTokenProps } from '../entities/passwordResetToken.entity';
+import { PasswordResetTokenProps } from '../entities/password-reset-token.entity';
 
 export class PasswordResetTokenRules {
   @MaxLength(255)

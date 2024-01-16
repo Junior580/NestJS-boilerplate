@@ -1,4 +1,4 @@
-import { VerificationTokenEntity } from './verificationToken.entity';
+import { VerificationTokenEntity } from './verification-token.entity';
 
 describe('Verification Token class', () => {
   let verificationToken: VerificationTokenEntity;

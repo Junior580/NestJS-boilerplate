@@ -1,6 +1,6 @@
 import { Entity } from '@shared/domain/entities/entity';
 import { EntityValidationError } from '@shared/domain/errors/validation-error';
-import { TwoFactorTokenFactory } from '../validators/twoFactorToken.validator';
+import { TwoFactorTokenFactory } from '../validators/two-factor-token.validator';
 
 export interface TwoFactorTokenProps {
   email: string;

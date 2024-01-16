@@ -1,6 +1,6 @@
 import { Entity } from '@shared/domain/entities/entity';
 import { EntityValidationError } from '@shared/domain/errors/validation-error';
-import { TwoFactorConfirmationFactory } from '../validators/twoFactorConfirmation.validator';
+import { TwoFactorConfirmationFactory } from '../validators/two-factor-confirmation.validator';
 
 export interface TwoFactorConfirmationProps {
   userId: string;

@@ -1,6 +1,6 @@
 import { MaxLength, IsString, IsNotEmpty } from 'class-validator';
 import { ClassValidatorFields } from '@shared/domain/validators/class-validator-fields';
-import { TwoFactorConfirmationProps } from '../entities/twoFactorConfirmation.entity';
+import { TwoFactorConfirmationProps } from '../entities/two-factor-confirmation.entity';
 
 export class TwoFactorConfirmationRules {
   @MaxLength(255)

@@ -1,6 +1,6 @@
 import { Entity } from '@shared/domain/entities/entity';
 import { EntityValidationError } from '@shared/domain/errors/validation-error';
-import { PasswordResetTokenFactory } from '../validators/passwordResetToken.validator';
+import { PasswordResetTokenFactory } from '../validators/password-reset-token.validator';
 
 export interface PasswordResetTokenProps {
   email: string;

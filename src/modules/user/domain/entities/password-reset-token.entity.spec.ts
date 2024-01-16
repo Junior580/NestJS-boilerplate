@@ -1,4 +1,4 @@
-import { PasswordResetTokenEntity } from './passwordResetToken.entity';
+import { PasswordResetTokenEntity } from './password-reset-token.entity';
 
 describe('Password Reset class', () => {
   let passwordReset: PasswordResetTokenEntity;
