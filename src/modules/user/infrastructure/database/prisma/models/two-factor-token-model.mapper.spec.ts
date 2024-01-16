@@ -13,7 +13,7 @@ describe('UserModelMapper integration tests', () => {
   });
 
   beforeEach(async () => {
-    await prismaService.user.deleteMany();
+    await prismaService.twoFactorToken.deleteMany();
 
     const expires = new Date();
     const createdAt = new Date('2024-01-16T01:42:21.317Z');
@@ -22,7 +22,7 @@ describe('UserModelMapper integration tests', () => {
       email: 'a@a.com',
       token: 'Test name',
       expires: expires,
-      createdAt: new Date(),
+      createdAt: createdAt,
     };
   });
 

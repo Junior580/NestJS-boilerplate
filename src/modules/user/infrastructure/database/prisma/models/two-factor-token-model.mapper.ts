@@ -10,7 +10,7 @@ export class TwoFactorTokenModelMapper {
       expires: model.expires,
     };
     try {
-      return new TwoFactorTokenEntity(data, model.id);
+      return new TwoFactorTokenEntity(data, model.id, model.createdAt);
     } catch {
       throw new ValidationError('An entity not be loaded');
     }
