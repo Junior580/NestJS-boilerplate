@@ -17,8 +17,8 @@ describe('two factor confirmation integration tests', () => {
     const createdAt = new Date('2024-01-11T02:46:32.309Z');
 
     props = {
-      userId: 'a@a.com',
-      id: 'd4255494-f981-4d26-a2a1-35d3f5b8d36a',
+      userId: 'test@test.com',
+      id: '35d3f5b8d36a-35d3f5b8d36a-35d3f5b8d36a-35d3f5b8d36a-35d3f5b8d36a',
       createdAt,
     };
   });
