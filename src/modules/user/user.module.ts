@@ -29,12 +29,12 @@ import { TwoFactorTokenRepository } from './domain/repositories/two-factor-token
 @Module({
   controllers: [
     CreateUserController,
-    // AuthController,
+    AuthController,
     ListUserController,
-    // LogoutController,
-    // RefreshTokenController,
-    // NewVerificationController,
-    // TwoFactorAuthController,
+    LogoutController,
+    RefreshTokenController,
+    NewVerificationController,
+    TwoFactorAuthController,
   ],
   providers: [
     RefreshTokenService,
@@ -58,13 +58,13 @@ import { TwoFactorTokenRepository } from './domain/repositories/two-factor-token
       },
       inject: ['PrismaService'],
     },
-    // {
-    //   provide: 'TwoFactorTokenRepository',
-    //   useFactory: (prismaService: PrismaService) => {
-    //     return new TwoFactorTokenPrismaRepository(prismaService);
-    //   },
-    //   inject: ['PrismaService'],
-    // },
+    {
+      provide: 'TwoFactorTokenRepository',
+      useFactory: (prismaService: PrismaService) => {
+        return new TwoFactorTokenPrismaRepository(prismaService);
+      },
+      inject: ['PrismaService'],
+    },
     {
       provide: 'VerificationTokenRepository',
       useFactory: (prismaService: PrismaService) => {
@@ -72,13 +72,6 @@ import { TwoFactorTokenRepository } from './domain/repositories/two-factor-token
       },
       inject: ['PrismaService'],
     },
-    // {
-    //   provide: 'TwoFactorTokenRepository',
-    //   useFactory: (prismaService: PrismaService) => {
-    //     return new TwoFactorTokenPrismaRepository(prismaService);
-    //   },
-    //   inject: ['PrismaService'],
-    // },
     {
       provide: VerificationTokenService,
       useFactory: (
@@ -110,35 +103,34 @@ import { TwoFactorTokenRepository } from './domain/repositories/two-factor-token
         'MailProvider',
       ],
     },
-
-    // {
-    //   provide: AuthService,
-    //   useFactory: (
-    //     userRepository: UserRepository,
-    //     twoFactorTokenPrismaRepository: TwoFactorTokenPrismaRepository,
-    //     jwtService: JwtService,
-    //     hashProvider: HashProvider,
-    //     verificationTokenService: VerificationTokenService,
-    //     mailProvider: MailProvider,
-    //   ) => {
-    //     return new AuthService(
-    //       userRepository,
-    //       twoFactorTokenPrismaRepository,
-    //       jwtService,
-    //       hashProvider,
-    //       verificationTokenService,
-    //       mailProvider,
-    //     );
-    //   },
-    //   inject: [
-    //     'UserRepository',
-    //     'TwoFactorTokenPrismaRepository',
-    //     JwtService,
-    //     'HashProvider',
-    //     'VerificationTokenService',
-    //     'MailProvider',
-    //   ],
-    // },
+    {
+      provide: AuthService,
+      useFactory: (
+        userRepository: UserRepository,
+        twoFactorTokenRepository: TwoFactorTokenRepository,
+        jwtService: JwtService,
+        hashProvider: HashProvider,
+        verificationTokenService: VerificationTokenService,
+        mailProvider: MailProvider,
+      ) => {
+        return new AuthService(
+          userRepository,
+          twoFactorTokenRepository,
+          jwtService,
+          hashProvider,
+          verificationTokenService,
+          mailProvider,
+        );
+      },
+      inject: [
+        'UserRepository',
+        'TwoFactorTokenRepository',
+        JwtService,
+        'HashProvider',
+        VerificationTokenService,
+        'MailProvider',
+      ],
+    },
     {
       provide: ListUserService,
       useFactory: (userRepository: UserRepository) => {
@@ -146,29 +138,29 @@ import { TwoFactorTokenRepository } from './domain/repositories/two-factor-token
       },
       inject: ['UserRepository'],
     },
-    // {
-    //   provide: NewVerificationService,
-    //   useFactory: (
-    //     userRepository: UserRepository,
-    //     verificationTokenRepository: VerificationTokenRepository,
-    //   ) => {
-    //     return new NewVerificationService(
-    //       userRepository,
-    //       verificationTokenRepository,
-    //     );
-    //   },
-    //   inject: ['UserRepository', 'VerificationTokenRepository'],
-    // },
-    // {
-    //   provide: TwoFactorAuthService,
-    //   useFactory: (
-    //     twoFactorTokenRepository: TwoFactorTokenRepository,
-    //     jwtService: JwtService,
-    //   ) => {
-    //     return new TwoFactorAuthService(twoFactorTokenRepository, jwtService);
-    //   },
-    //   inject: ['TwoFactorTokenRepository', JwtService],
-    // },
+    {
+      provide: NewVerificationService,
+      useFactory: (
+        userRepository: UserRepository,
+        verificationTokenRepository: VerificationTokenRepository,
+      ) => {
+        return new NewVerificationService(
+          userRepository,
+          verificationTokenRepository,
+        );
+      },
+      inject: ['UserRepository', 'VerificationTokenRepository'],
+    },
+    {
+      provide: TwoFactorAuthService,
+      useFactory: (
+        twoFactorTokenRepository: TwoFactorTokenRepository,
+        jwtService: JwtService,
+      ) => {
+        return new TwoFactorAuthService(twoFactorTokenRepository, jwtService);
+      },
+      inject: ['TwoFactorTokenRepository', JwtService],
+    },
   ],
 })
 export class UserModule {}

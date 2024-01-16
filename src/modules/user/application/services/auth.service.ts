@@ -91,7 +91,7 @@ export class AuthService implements Service<AuthInput, Output> {
       expiresIn: '24h',
     });
 
-    return { access_token, refresh_token };
+    return { access_token: '', refresh_token: '' };
   }
 
   private async generateTwoFactorToken(email: string) {
