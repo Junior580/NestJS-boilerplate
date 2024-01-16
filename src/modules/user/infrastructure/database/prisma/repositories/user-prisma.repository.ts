@@ -7,8 +7,6 @@ import {
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { UserModelMapper } from '../models/user-model.mapper';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { VerificationTokenModelMapper } from '../models/verificationToken-model.mapper';
-import { VerificationTokenEntity } from '@modules/user/domain/entities/verificationToken.entity';
 import { TwoFactorTokenModelMapper } from '../models/twoFactorToken-model.mapper';
 import { TwoFactorConfirmationEntity } from '@modules/user/domain/entities/twoFactorConfirmation.entity';
 import { TwoFactorConfirmationModelMapper } from '../models/twoFactorConfirmation-model.mapper';
@@ -115,59 +113,6 @@ export class UserPrismaRepository implements UserRepository {
     if (userExists) {
       throw new HttpException('Email already in use!', HttpStatus.CONFLICT);
     }
-  }
-
-  async getVerificationTokenByEmail(email: string) {
-    try {
-      const verificationToken =
-        await this.prismaService.verificationToken.findFirst({
-          where: { email },
-        });
-
-      return VerificationTokenModelMapper.toEntity(verificationToken);
-    } catch (error) {
-      return null;
-    }
-  }
-
-  async createVerificationToken(
-    entity: VerificationTokenEntity,
-  ): Promise<VerificationTokenEntity> {
-    const verificationToken = await this.prismaService.verificationToken.create(
-      {
-        data: entity.toJSON(),
-      },
-    );
-
-    return VerificationTokenModelMapper.toEntity(verificationToken);
-  }
-
-  async deleteVerificationToken(id: string): Promise<void> {
-    await this.prismaService.verificationToken.delete({
-      where: {
-        id,
-      },
-    });
-  }
-
-  async getVerificationTokenByToken(token: string) {
-    try {
-      const verificationToken =
-        await this.prismaService.verificationToken.findUnique({
-          where: { token },
-        });
-
-      return VerificationTokenModelMapper.toEntity(verificationToken);
-    } catch (error) {
-      return null;
-    }
-  }
-
-  async updateUserVerificationToken(userId: string, userEmail: string) {
-    await this.prismaService.user.update({
-      where: { id: userId },
-      data: { emailVerified: new Date(), email: userEmail },
-    });
   }
 
   async getTwoFactorTokenByEmail(email: string) {

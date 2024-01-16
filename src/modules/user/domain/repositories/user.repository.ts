@@ -21,15 +21,6 @@ export interface UserRepository
   findByEmail(email: string): Promise<UserEntity | null>;
   userEmailExists(email: string): Promise<void>;
 
-  // Funções relacionadas à entidade VerificationTokenEntity
-  getVerificationTokenByEmail(email: string): Promise<VerificationTokenEntity>;
-  createVerificationToken(
-    entity: VerificationTokenEntity,
-  ): Promise<VerificationTokenEntity>;
-  deleteVerificationToken(id: string): Promise<void>;
-  getVerificationTokenByToken(token: string): Promise<VerificationTokenEntity>;
-  updateUserVerificationToken(userId: string, userEmail: string): Promise<void>;
-
   // Funções relacionadas à entidade TwoFactorTokenEntity
   getTwoFactorTokenByEmail(email: string): Promise<TwoFactorTokenEntity>;
   deleteTwoFactorToken(id: string): Promise<void>;
