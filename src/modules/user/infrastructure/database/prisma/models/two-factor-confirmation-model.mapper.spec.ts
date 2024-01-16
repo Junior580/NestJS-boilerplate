@@ -13,7 +13,7 @@ describe('two factor confirmation integration tests', () => {
   });
 
   beforeEach(async () => {
-    await prismaService.user.deleteMany();
+    await prismaService.twoFactorConfirmation.deleteMany();
     const createdAt = new Date('2024-01-11T02:46:32.309Z');
 
     props = {
