@@ -115,27 +115,6 @@ export class UserPrismaRepository implements UserRepository {
     }
   }
 
-  async getTwoFactorTokenByEmail(email: string) {
-    try {
-      const verificationToken =
-        await this.prismaService.twoFactorToken.findFirst({
-          where: { email },
-        });
-
-      return TwoFactorTokenModelMapper.toEntity(verificationToken);
-    } catch (error) {
-      return null;
-    }
-  }
-
-  async deleteTwoFactorToken(id: string): Promise<void> {
-    await this.prismaService.twoFactorToken.delete({
-      where: {
-        id,
-      },
-    });
-  }
-
   async getTwoFactorConfirmationByUserId(
     userId: string,
   ): Promise<TwoFactorConfirmationEntity> {

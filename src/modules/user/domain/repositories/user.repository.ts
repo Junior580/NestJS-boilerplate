@@ -21,10 +21,6 @@ export interface UserRepository
   findByEmail(email: string): Promise<UserEntity | null>;
   userEmailExists(email: string): Promise<void>;
 
-  // Funções relacionadas à entidade TwoFactorTokenEntity
-  getTwoFactorTokenByEmail(email: string): Promise<TwoFactorTokenEntity>;
-  deleteTwoFactorToken(id: string): Promise<void>;
-
   // Funções relacionadas à entidade TwoFactorConfirmationEntity
   getTwoFactorConfirmationByUserId(
     userId: string,
