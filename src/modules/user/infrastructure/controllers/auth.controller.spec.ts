@@ -4,7 +4,7 @@ import { AuthService } from '../../application/services/auth.service';
 import { FastifyReply } from 'fastify';
 import { UserRepository } from '@modules/user/domain/repositories/user.repository';
 import { JwtService } from '@nestjs/jwt';
-import { HashProvider } from '@shared/application/providers/hash-provider';
+import { HashProvider } from '@shared/application/providers/hashProvider/hash-provider';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -22,9 +22,9 @@ describe('AuthController', () => {
       controllers: [AuthController],
       providers: [
         AuthService,
-        { provide: UserRepository, useValue: userRepositoryMock },
+        { provide: userRepository, useValue: userRepositoryMock },
         { provide: JwtService, useValue: jwtServiceMock },
-        { provide: HashProvider, useValue: hashProviderMock },
+        { provide: hashProvider, useValue: hashProviderMock },
       ],
     }).compile();
 

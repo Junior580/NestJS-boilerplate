@@ -7,6 +7,7 @@ import fastifyCookie from '@fastify/cookie';
 
 import { AppModule } from './app.module';
 import { applyGlobalConfig } from '@config/global-config';
+import { swaggerConfig } from '@config/swagger-config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -19,6 +20,8 @@ async function bootstrap() {
   });
 
   applyGlobalConfig(app);
+
+  swaggerConfig(app);
 
   await app.listen(3333);
 }
