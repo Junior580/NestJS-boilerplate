@@ -11,16 +11,12 @@ export type UserInput = {
   name: string;
   email: string;
   password: string;
-  emailVerified: Date;
-  image: string;
-  role: 'ADMIN' | 'USER';
-  isTwoFactorEnabled: boolean;
 };
 
 type Output = UserOutput;
 
 @Injectable()
-export class UserService implements Service<UserInput, Output> {
+export class CreateUserService implements Service<UserInput, Output> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly hashProvider: HashProvider,

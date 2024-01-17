@@ -1,12 +1,11 @@
 ### create user
-POST http://localhost:3333/user
+POST http://localhost:3333/create-user
 content-type: application/json
 
 {
-	"name":"user1",
-	"email":"user1@email.com",
-	"password":"teste123@",
-	"isTwoFactorEnabled": true
+	"name":"user4",
+	"email":"user4@email.com",
+	"password":"teste123@"
 }
 
 
@@ -15,7 +14,7 @@ POST http://localhost:3333/auth
 content-type: application/json
 
 {
-	"email":"user2@email.com",
+	"email":"user1@email.com",
 	"password":"teste123@"
 }
 
@@ -29,7 +28,7 @@ content-type: application/json
 }
 
 ### user confirmation
-GET  http://localhost:3333/auth/new-verification?token=7addaef1-cb49-434c-a7c7-7bf44b7fcdbf
+GET  http://localhost:3333/auth/new-verification?token=d48b1872-dc30-4677-92c6-3c549a56d09c
 
 
 

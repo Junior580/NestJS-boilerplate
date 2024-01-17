@@ -55,6 +55,7 @@ export class AuthService implements Service<AuthInput, Output> {
         verificationToken.email,
         verificationToken.token,
       );
+      console.log(`🔥 ~ !confirmation ~ token: ${verificationToken.token} `);
 
       return { message: 'Confirm your email first!' };
     }
@@ -91,7 +92,7 @@ export class AuthService implements Service<AuthInput, Output> {
       expiresIn: '24h',
     });
 
-    return { access_token: '', refresh_token: '' };
+    return { access_token, refresh_token };
   }
 
   private async generateTwoFactorToken(email: string) {

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { UserService } from '@modules/user/application/services/create-user.service';
+import { CreateUserService } from '@modules/user/application/services/create-user.service';
 import { CreateUserController } from './infrastructure/controllers/create-user.controller';
 import { HashProvider } from '../../shared/application/providers/hashProvider/hash-provider';
 import { JwtService } from '@nestjs/jwt';
@@ -82,14 +82,14 @@ import { TwoFactorTokenRepository } from './domain/repositories/two-factor-token
       inject: ['VerificationTokenRepository'],
     },
     {
-      provide: UserService,
+      provide: CreateUserService,
       useFactory: (
         userRepository: UserRepository,
         hashProvider: HashProvider,
         verificationTokenService: VerificationTokenService,
         mailProvider: MailProvider,
       ) => {
-        return new UserService(
+        return new CreateUserService(
           userRepository,
           hashProvider,
           verificationTokenService,

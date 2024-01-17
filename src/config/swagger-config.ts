@@ -4,9 +4,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 export function swaggerConfig(app: INestApplication) {
   const config = new DocumentBuilder()
     .setTitle('Users admin')
-    .setDescription('The cats API description')
+    .setDescription('API for creating and managing users')
     .setVersion('1.0')
-    .addTag('cats')
+    .addTag('users')
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
