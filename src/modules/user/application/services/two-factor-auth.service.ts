@@ -1,7 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Service } from '@shared/application/services';
-import { UserRepository } from '@modules/user/domain/repositories/user.repository';
 import { TwoFactorTokenRepository } from '@modules/user/domain/repositories/two-factor-token.repository';
 
 export type TwoFactorAuthInput = {
@@ -26,6 +25,13 @@ export class TwoFactorAuthService
     const existingToken =
       await this.twoFactorTokenRepository.getTwoFactorTokenByEmail(email);
 
+    if (!existingToken) {
+      throw new HttpException(
+        `No code for the email provided ${email}`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
     if (existingToken.token !== code)
       return { message: 'Login failed, invalid code' };
 
@@ -42,6 +48,8 @@ export class TwoFactorAuthService
     const refresh_token = await this.jwtService.signAsync(payload, {
       expiresIn: '24h',
     });
+
+    await this.twoFactorTokenRepository.deleteTwoFactorToken(existingToken.id);
 
     return { access_token, refresh_token };
   }
