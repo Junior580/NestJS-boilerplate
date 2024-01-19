@@ -7,6 +7,7 @@ import {
 import { PrismaService } from '@shared/infrastructure/prisma/prisma.service';
 import { UserModelMapper } from '../models/user-model.mapper';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { NotFoundError } from '@shared/domain/errors/not-found-error';
 
 @Injectable()
 export class UserPrismaRepository implements UserRepository {
@@ -94,10 +95,7 @@ export class UserPrismaRepository implements UserRepository {
 
       return UserModelMapper.toEntity(user);
     } catch (error) {
-      throw new HttpException(
-        `User Model not found using email ${email}`,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new NotFoundError(`User Model not found using email ${email}`);
     }
   }
 

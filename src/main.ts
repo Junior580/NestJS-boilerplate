@@ -19,9 +19,9 @@ async function bootstrap() {
     secret: process.env.JWT_PASS,
   });
 
-  applyGlobalConfig(app);
-
   swaggerConfig(app);
+
+  applyGlobalConfig(app);
 
   await app.listen(3333);
 }

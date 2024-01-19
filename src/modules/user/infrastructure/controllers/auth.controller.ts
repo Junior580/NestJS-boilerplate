@@ -11,11 +11,10 @@ export class AuthController {
     @Body() createAuthDto: AuthDto,
     @Res({ passthrough: true }) response: FastifyReply,
   ) {
-    const { access_token, refresh_token } =
+    const { access_token, refresh_token, message } =
       await this.authService.execute(createAuthDto);
 
-    if (!access_token && !refresh_token)
-      return { message: '2FA Token enviado por email' };
+    if (!access_token && !refresh_token) return message;
 
     response.setCookie('@auth', access_token, { httpOnly: true });
     response.setCookie('@refresh', refresh_token, { httpOnly: true });

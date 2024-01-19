@@ -1,3 +1,4 @@
+import { NotFoundError } from '@shared/domain/errors/not-found-error';
 import { UserEntity } from '../../../domain/entities/user.entity';
 import { UserInMemoryRepository } from './user-in-memory.repository';
 
@@ -10,7 +11,7 @@ describe('UserInMemoryRepository unit tests', () => {
 
   it('Should throw error when not found - findByEmail method', async () => {
     await expect(sut.findByEmail('a@a.com')).rejects.toThrow(
-      new Error('Entity not found using email a@a.com'),
+      new NotFoundError('Entity not found using email a@a.com'),
     );
   });
 
