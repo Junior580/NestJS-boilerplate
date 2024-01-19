@@ -3,8 +3,8 @@ POST http://localhost:3333/create-user
 content-type: application/json
 
 {
-	"name":"user2",
-	"email":"user.2@email.com",
+	"name":"user4",
+	"email":"user.4@email.com",
 	"password":"teste123@"
 }
 
@@ -14,7 +14,7 @@ POST http://localhost:3333/auth
 content-type: application/json
 
 {
-	"email": "user.2@email.com",
+	"email": "user.4@email.com",
 	"password":"teste123@"
 }
 
@@ -23,12 +23,12 @@ POST http://localhost:3333/auth/2fa
 content-type: application/json
 
 {
-	"email":"user.2@email.com",
-	"code":"300386"
+	"email":"user.1@email.com",
+	"code":"654274"
 }
 
 ### user confirmation
-GET  http://localhost:3333/auth/new-verification?token=401b6ef5-4129-4844-bb37-c96799543cff
+GET  http://localhost:3333/auth/new-verification?token=91742ff9-cb99-43d8-bcee-4dd52f53c0a2 
 
 
 
