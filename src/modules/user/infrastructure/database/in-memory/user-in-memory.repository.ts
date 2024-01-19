@@ -8,7 +8,7 @@ import {
   SearchParams,
   SearchResult,
 } from '@shared/domain/repositories/searchable-repository-contracts';
-import { NotFoundError } from '@shared/domain/errors/not-found-error';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class UserInMemoryRepository
   extends InMemoryRepository<UserEntity>
@@ -24,7 +24,10 @@ export class UserInMemoryRepository
   async findByEmail(email: string): Promise<UserEntity> {
     const entity = this.items.find((item) => item.email === email);
     if (!entity) {
-      throw new NotFoundError(`Entity not found using email ${email}`);
+      throw new HttpException(
+        `Entity not found using email ${email}`,
+        HttpStatus.NOT_FOUND,
+      );
     }
     return entity;
   }
@@ -32,14 +35,20 @@ export class UserInMemoryRepository
   async emailExists(email: string): Promise<void> {
     const entity = this.items.find((item) => item.email === email);
     if (entity) {
-      throw new Error('Email address already used');
+      throw new HttpException(
+        'Email address already used',
+        HttpStatus.CONFLICT,
+      );
     }
   }
 
   async userEmailExists(email: string): Promise<void> {
     const entity = this.items.find((item) => item.email === email);
     if (entity) {
-      throw new Error('Email address already used');
+      throw new HttpException(
+        'Email address already used',
+        HttpStatus.CONFLICT,
+      );
     }
   }
 
@@ -50,7 +59,10 @@ export class UserInMemoryRepository
       (item) => item.email === email,
     );
     if (entity) {
-      throw new Error('Email address already used');
+      throw new HttpException(
+        'Email address already used',
+        HttpStatus.CONFLICT,
+      );
     }
     return entity;
   }
@@ -68,7 +80,10 @@ export class UserInMemoryRepository
     );
 
     if (newArray.length === this.verificationTokenEntity.length) {
-      throw new NotFoundError('Item not found in the array');
+      throw new HttpException(
+        'Item not found in the array',
+        HttpStatus.NOT_FOUND,
+      );
     }
   }
 

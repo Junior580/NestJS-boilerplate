@@ -44,51 +44,30 @@ export class AccountEntity extends Entity<AccountProps> {
   }
 
   get refresh_token(): string {
-    if (!this.props.refresh_token) {
-      throw new Error('No refresh_token setted');
-    }
     return this.props.refresh_token;
   }
 
   get access_token(): string {
-    if (!this.props.access_token) {
-      throw new Error('No refresh_token setted');
-    }
     return this.props.access_token;
   }
 
   get expires_at(): number {
-    if (!this.props.expires_at) {
-      throw new Error('No expires_at setted');
-    }
     return this.props.expires_at;
   }
 
   get token_type(): string {
-    if (!this.props.expires_at) {
-      throw new Error('No expires_at setted');
-    }
     return this.props.token_type;
   }
 
   get scope(): string {
-    if (!this.props.scope) {
-      throw new Error('No scope setted');
-    }
     return this.props.scope;
   }
 
   get id_token(): string {
-    if (!this.props.id_token) {
-      throw new Error('No id_token setted');
-    }
     return this.props.id_token;
   }
 
   get session_state(): string {
-    if (!this.props.session_state) {
-      throw new Error('No session_state setted');
-    }
     return this.props.session_state;
   }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { HashProvider } from '@shared/application/providers/hashProvider/hash-provider';
 import { UserEntity } from '../../domain/entities/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
@@ -28,7 +28,7 @@ export class CreateUserService implements Service<UserInput, Output> {
     const { email, name, password } = input;
 
     if (!email || !name || !password) {
-      throw new Error('Invalid fields!');
+      throw new HttpException('Invalid fields!', HttpStatus.BAD_REQUEST);
     }
 
     await this.userRepository.userEmailExists(email);

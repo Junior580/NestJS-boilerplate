@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import MailProvider from '@shared/application/providers/mailProvider/mail-Provider';
 import { SendMailDTO } from '@shared/application/providers/mailProvider/mail-Provider';
 import { Resend } from 'resend';
@@ -24,7 +24,10 @@ export class ResendProvider implements MailProvider {
       console.log(`E-mail enviado com sucesso para: ${to}`);
     } catch (error) {
       console.error('Erro ao enviar o e-mail:', error);
-      throw new Error('Erro ao enviar o e-mail');
+      throw new HttpException(
+        'Erro ao enviar o e-mail',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -42,7 +45,10 @@ export class ResendProvider implements MailProvider {
       console.log(`E-mail enviado com sucesso para: ${email}`);
     } catch (error) {
       console.error('Erro ao enviar o e-mail:', error);
-      throw new Error('Erro ao enviar o e-mail');
+      throw new HttpException(
+        'Erro ao enviar o e-mail',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }
