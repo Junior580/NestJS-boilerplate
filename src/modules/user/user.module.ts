@@ -25,12 +25,14 @@ import { VerificationTokenPrismaRepository } from './infrastructure/database/pri
 import { VerificationTokenRepository } from './domain/repositories/verification-token.repository';
 import { TwoFactorTokenRepository } from './domain/repositories/two-factor-token.repository';
 import { UpdateUserService } from './application/services/update-user.service';
+import { UpdateUserController } from './infrastructure/controllers/update-user.controller';
 
 @Module({
   controllers: [
     CreateUserController,
-    AuthController,
     ListUserController,
+    UpdateUserController,
+    AuthController,
     LogoutController,
     RefreshTokenController,
     NewVerificationController,

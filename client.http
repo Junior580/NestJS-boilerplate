@@ -23,17 +23,23 @@ POST http://localhost:3333/auth/2fa
 content-type: application/json
 
 {
-	"email":"user.1@email.com",
+	"email":"user10@email.com",
 	"code":"613168"
 }
 
 ### user confirmation
-GET  http://localhost:3333/auth/new-verification?token=91742ff9-cb99-43d8-bcee-4dd52f53c0a2 
+GET  http://localhost:3333/auth/new-verification?token=a44b0b41-af4e-48a6-b198-2d1456717905
 
 
 
-### get orders
-GET http://localhost:3333/list-user
+### update users
+POST http://localhost:3333/update-user
+content-type: application/json
+
+{
+	"id":"25ebb8c5-6a70-4ada-acab-db8132806709",
+	"email":"updated.user@email.com"
+}
 
 
 ###
