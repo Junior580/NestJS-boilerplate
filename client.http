@@ -28,7 +28,7 @@ content-type: application/json
 }
 
 ### user confirmation
-GET  http://localhost:3333/auth/new-verification?token=a44b0b41-af4e-48a6-b198-2d1456717905
+GET  http://localhost:3333/auth/new-verification?token=ff06da08-1fd1-4bbe-af8f-9c10e869c3c0
 
 
 
@@ -38,7 +38,7 @@ content-type: application/json
 
 {
 	"id":"25ebb8c5-6a70-4ada-acab-db8132806709",
-	"email":"updated.user@email.com"
+	"email":"user10@email.com"
 }
 
 

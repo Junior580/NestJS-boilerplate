@@ -50,10 +50,11 @@ export class UserEntity extends Entity<UserProps> {
   updateEmail(value: string): void {
     UserEntity.validate({
       ...this.props,
+      emailVerified: null,
       email: value,
     });
+    this.emailVerified = null;
     this.email = value;
-    this.emailVerified = undefined;
   }
 
   updatePassword(value: string): void {

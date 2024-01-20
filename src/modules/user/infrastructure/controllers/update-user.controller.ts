@@ -10,7 +10,6 @@ export class UpdateUserController {
   @Post()
   @UseGuards(AuthGuard)
   updateUser(@Body() userInfo: UpdateUserDto) {
-    Logger.log(`update controler ~ ${JSON.stringify(userInfo)}`);
     return this.updateUserService.execute(userInfo);
   }
 }

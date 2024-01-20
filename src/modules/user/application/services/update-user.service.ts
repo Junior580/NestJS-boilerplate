@@ -13,7 +13,10 @@ export type UpdateUserInput = {
   isTwoFactorEnabled?: boolean;
 };
 
-type Output = UserOutput;
+type Output = {
+  user: UserOutput;
+  message?: string;
+};
 
 @Injectable()
 export class UpdateUserService {
@@ -38,10 +41,10 @@ export class UpdateUserService {
     }
 
     if (email) {
-      entity.updateEmail(name);
-      const verficationToken = await this.verificationTokenService.execute(
-        entity.email,
-      );
+      //buscar caso o email já exista para evitar duplicidade
+      entity.updateEmail(email);
+      const verficationToken =
+        await this.verificationTokenService.execute(email);
 
       console.log(`Verification token: ${JSON.stringify(verficationToken)}`);
 
@@ -52,6 +55,7 @@ export class UpdateUserService {
     }
 
     if (password) {
+      //adicionar a o hash provider para criptografar senha
       entity.updatePassword(password);
     }
 
@@ -64,6 +68,9 @@ export class UpdateUserService {
     }
 
     await this.userRepository.update(entity);
-    return UserOutputMapper.toOutput(entity);
+    return {
+      user: UserOutputMapper.toOutput(entity),
+      message: email && 'Verification email sent',
+    };
   }
 }

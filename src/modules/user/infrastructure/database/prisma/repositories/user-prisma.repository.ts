@@ -115,7 +115,15 @@ export class UserPrismaRepository implements UserRepository {
     }
   }
 
-  async update(entity: UserEntity): Promise<void> {}
+  async update(entity: UserEntity): Promise<void> {
+    await this._get(entity._id);
+    await this.prismaService.user.update({
+      data: entity.props,
+      where: {
+        id: entity._id,
+      },
+    });
+  }
 
   private async _get(id: string): Promise<UserEntity> {
     try {
