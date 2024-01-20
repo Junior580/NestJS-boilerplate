@@ -14,7 +14,7 @@ POST http://localhost:3333/auth
 content-type: application/json
 
 {
-	"email": "user.4@email.com",
+	"email": "user.1@email.com",
 	"password":"teste123@"
 }
 
@@ -24,7 +24,7 @@ content-type: application/json
 
 {
 	"email":"user.1@email.com",
-	"code":"654274"
+	"code":"613168"
 }
 
 ### user confirmation

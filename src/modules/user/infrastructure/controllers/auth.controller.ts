@@ -2,9 +2,14 @@ import { Controller, Post, Body, Res } from '@nestjs/common';
 import { AuthService } from '../../application/services/auth.service';
 import { AuthDto } from '../dto/auth.dto';
 import { FastifyReply } from 'fastify';
+import { TwoFactorAuthService } from '@modules/user/application/services/two-factor-auth.service';
+import { TwoFactorAuthDto } from '../dto/two-factor-auth.dto';
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly twoFactorAuthService: TwoFactorAuthService,
+  ) {}
 
   @Post()
   async authLogin(
@@ -20,5 +25,10 @@ export class AuthController {
     response.setCookie('@refresh', refresh_token, { httpOnly: true });
 
     return { success: 'ok', access_token, refresh_token };
+  }
+
+  @Post('2fa')
+  async twoFactorAuth(@Body() twoFactorAuthDto: TwoFactorAuthDto) {
+    return this.twoFactorAuthService.execute(twoFactorAuthDto);
   }
 }

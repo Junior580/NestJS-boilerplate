@@ -20,7 +20,6 @@ import { ResendProvider } from './infrastructure/providers/mailProvider/resendMa
 import { NewVerificationController } from './infrastructure/controllers/new-verification.controller';
 import { NewVerificationService } from './application/services/new-verification.service';
 import { TwoFactorAuthService } from './application/services/two-factor-auth.service';
-import { TwoFactorAuthController } from './infrastructure/controllers/two-factor-auth.controller';
 import { TwoFactorTokenPrismaRepository } from './infrastructure/database/prisma/repositories/two-factor-token-prisma.repository';
 import { VerificationTokenPrismaRepository } from './infrastructure/database/prisma/repositories/verification-token-prisma.repository';
 import { VerificationTokenRepository } from './domain/repositories/verification-token.repository';
@@ -34,7 +33,6 @@ import { TwoFactorTokenRepository } from './domain/repositories/two-factor-token
     LogoutController,
     RefreshTokenController,
     NewVerificationController,
-    TwoFactorAuthController,
   ],
   providers: [
     RefreshTokenService,

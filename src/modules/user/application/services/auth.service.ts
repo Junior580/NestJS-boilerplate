@@ -45,8 +45,6 @@ export class AuthService implements Service<AuthInput, Output> {
     }
 
     if (!existingUser.emailVerified) {
-      console.log(`🔥 ~ !confirmation ~ line: 47 `);
-
       const verificationToken = await this.verificationTokenService.execute(
         existingUser.email,
       );
