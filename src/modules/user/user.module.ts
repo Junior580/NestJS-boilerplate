@@ -24,6 +24,7 @@ import { TwoFactorTokenPrismaRepository } from './infrastructure/database/prisma
 import { VerificationTokenPrismaRepository } from './infrastructure/database/prisma/repositories/verification-token-prisma.repository';
 import { VerificationTokenRepository } from './domain/repositories/verification-token.repository';
 import { TwoFactorTokenRepository } from './domain/repositories/two-factor-token.repository';
+import { UpdateUserService } from './application/services/update-user.service';
 
 @Module({
   controllers: [
@@ -158,6 +159,21 @@ import { TwoFactorTokenRepository } from './domain/repositories/two-factor-token
         return new TwoFactorAuthService(twoFactorTokenRepository, jwtService);
       },
       inject: ['TwoFactorTokenRepository', JwtService],
+    },
+    {
+      provide: UpdateUserService,
+      useFactory: (
+        userRepository: UserRepository,
+        verificationTokenService: VerificationTokenService,
+        mailProvider: MailProvider,
+      ) => {
+        return new UpdateUserService(
+          userRepository,
+          verificationTokenService,
+          mailProvider,
+        );
+      },
+      inject: ['UserRepository', VerificationTokenService, 'MailProvider'],
     },
   ],
 })

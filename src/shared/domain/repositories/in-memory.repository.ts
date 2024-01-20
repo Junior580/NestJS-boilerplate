@@ -4,15 +4,18 @@ import { RepositoryInterface } from './repository-contracts';
 export abstract class InMemoryRepository<E extends Entity>
   implements RepositoryInterface<E>
 {
+  update(entity: E): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
   items: E[] = [];
 
   async insert(entity: E): Promise<void> {
     this.items.push(entity);
   }
 
-  // async findById(id: string): Promise<E> {
-  //   return this._get(id);
-  // }
+  async findById(id: string): Promise<E> {
+    return this._get(id);
+  }
 
   async findAll(): Promise<E[]> {
     return this.items;
@@ -30,12 +33,12 @@ export abstract class InMemoryRepository<E extends Entity>
   //   this.items.splice(index, 1);
   // }
 
-  // protected async _get(id: string): Promise<E> {
-  //   const _id = `${id}`;
-  //   const entity = this.items.find((item) => item.id === _id);
-  //   if (!entity) {
-  //     throw new Error('Entity not found');
-  //   }
-  //   return entity;
-  // }
+  protected async _get(id: string): Promise<E> {
+    const _id = `${id}`;
+    const entity = this.items.find((item) => item.id === _id);
+    if (!entity) {
+      throw new Error('Entity not found');
+    }
+    return entity;
+  }
 }

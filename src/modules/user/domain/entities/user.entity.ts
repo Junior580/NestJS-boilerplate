@@ -53,6 +53,7 @@ export class UserEntity extends Entity<UserProps> {
       email: value,
     });
     this.email = value;
+    this.emailVerified = undefined;
   }
 
   updatePassword(value: string): void {
@@ -117,6 +118,10 @@ export class UserEntity extends Entity<UserProps> {
 
   private set password(value: string) {
     this.props.password = value;
+  }
+
+  private set emailVerified(value: Date | undefined) {
+    this.props.emailVerified = value;
   }
 
   private set isTwoFactorEnabled(value: boolean) {

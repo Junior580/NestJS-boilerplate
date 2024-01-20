@@ -3,8 +3,8 @@ POST http://localhost:3333/create-user
 content-type: application/json
 
 {
-	"name":"user4",
-	"email":"user.4@email.com",
+	"name":"user10",
+	"email":"user10@email.com",
 	"password":"teste123@"
 }
 
@@ -14,7 +14,7 @@ POST http://localhost:3333/auth
 content-type: application/json
 
 {
-	"email": "user.1@email.com",
+	"email": "user10@email.com",
 	"password":"teste123@"
 }
 

@@ -86,6 +86,10 @@ export class UserPrismaRepository implements UserRepository {
     });
   }
 
+  findById(id: string): Promise<UserEntity> {
+    return this._get(id);
+  }
+
   async findByEmail(email: string): Promise<UserEntity | null> {
     try {
       const user = await this.prismaService.user.findFirst({
@@ -108,6 +112,22 @@ export class UserPrismaRepository implements UserRepository {
 
     if (userExists) {
       throw new HttpException('Email already in use!', HttpStatus.CONFLICT);
+    }
+  }
+
+  async update(entity: UserEntity): Promise<void> {}
+
+  private async _get(id: string): Promise<UserEntity> {
+    try {
+      const user = await this.prismaService.user.findUnique({
+        where: { id },
+      });
+      return UserModelMapper.toEntity(user);
+    } catch {
+      throw new HttpException(
+        `UserModel not found using e-mail ${id}`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }
