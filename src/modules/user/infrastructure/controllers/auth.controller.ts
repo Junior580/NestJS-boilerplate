@@ -16,19 +16,37 @@ export class AuthController {
     @Body() createAuthDto: AuthDto,
     @Res({ passthrough: true }) response: FastifyReply,
   ) {
-    const { access_token, refresh_token, message } =
-      await this.authService.execute(createAuthDto);
+    const {
+      access_token,
+      refresh_token,
+      isTwoFactorAuthEnabled,
+      isEmailVerified,
+    } = await this.authService.execute(createAuthDto);
 
-    if (!access_token && !refresh_token) return message;
+    if (isTwoFactorAuthEnabled) return { isTwoFactorAuthEnabled };
+
+    if (isEmailVerified === false) return { isEmailVerified };
+
+    if (access_token && refresh_token) {
+      response.setCookie('@auth', access_token, { httpOnly: true });
+      response.setCookie('@refresh', refresh_token, { httpOnly: true });
+      return { access_token, refresh_token };
+    }
+  }
+
+  @Post('2fa')
+  async twoFactorAuth(
+    @Body() twoFactorAuthDto: TwoFactorAuthDto,
+    @Res({ passthrough: true }) response: FastifyReply,
+  ) {
+    const { access_token, refresh_token, message } =
+      await this.twoFactorAuthService.execute(twoFactorAuthDto);
+
+    if (!access_token && !refresh_token) return { message };
 
     response.setCookie('@auth', access_token, { httpOnly: true });
     response.setCookie('@refresh', refresh_token, { httpOnly: true });
 
-    return { success: 'ok', access_token, refresh_token };
-  }
-
-  @Post('2fa')
-  async twoFactorAuth(@Body() twoFactorAuthDto: TwoFactorAuthDto) {
-    return this.twoFactorAuthService.execute(twoFactorAuthDto);
+    return { access_token, refresh_token };
   }
 }

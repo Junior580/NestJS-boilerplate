@@ -17,7 +17,8 @@ export type AuthInput = {
 
 type Output =
   | { access_token: string; refresh_token: string }
-  | { message: string };
+  | { isTwoFactorAuthEnabled: boolean }
+  | { isEmailVerified: boolean };
 
 @Injectable()
 export class AuthService implements Service<AuthInput, Output> {
@@ -55,12 +56,10 @@ export class AuthService implements Service<AuthInput, Output> {
       );
       console.log(`🔥 ~ !confirmation ~ token: ${verificationToken.token} `);
 
-      return { message: 'Confirm your email first!' };
+      return { isEmailVerified: false };
     }
 
     if (existingUser.isTwoFactorEnabled) {
-      console.log(`🔥 ~ isTwoFactorEnabled ~ line: 62 `);
-
       const twoFactorToken = await this.generateTwoFactorToken(
         existingUser.email,
       );
@@ -71,10 +70,8 @@ export class AuthService implements Service<AuthInput, Output> {
 
       this.sendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token);
 
-      return { message: '2fa token sended' };
+      return { isTwoFactorAuthEnabled: true };
     }
-
-    console.log(`🔥 ~ normal ~ line: 72 `);
 
     const payload = {
       id: existingUser.id,

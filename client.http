@@ -14,7 +14,7 @@ POST http://localhost:3333/auth
 content-type: application/json
 
 {
-	"email": "user10@email.com",
+	"email": "user1@email.com",
 	"password":"teste123@"
 }
 
@@ -30,6 +30,10 @@ content-type: application/json
 ### user confirmation
 GET  http://localhost:3333/auth/new-verification?token=ff06da08-1fd1-4bbe-af8f-9c10e869c3c0
 
+
+
+### get users
+GET  http://localhost:3333/list-user?perPage=10&page=1
 
 
 ### update users
