@@ -28,8 +28,15 @@ export class AuthController {
     if (isEmailVerified === false) return { isEmailVerified };
 
     if (access_token && refresh_token) {
-      response.setCookie('@auth', access_token, { httpOnly: true });
-      response.setCookie('@refresh', refresh_token, { httpOnly: true });
+      console.log(' contem acess token / refresh token');
+      response.setCookie('@auth', access_token, {
+        httpOnly: true,
+        path: '/',
+      });
+      response.setCookie('@refresh', refresh_token, {
+        httpOnly: true,
+        path: '/',
+      });
       return { access_token, refresh_token };
     }
   }
@@ -44,9 +51,16 @@ export class AuthController {
 
     if (!access_token && !refresh_token) return { message };
 
-    response.setCookie('@auth', access_token, { httpOnly: true });
-    response.setCookie('@refresh', refresh_token, { httpOnly: true });
-
-    return { access_token, refresh_token };
+    if (access_token && refresh_token) {
+      response.setCookie('@auth', access_token, {
+        httpOnly: true,
+        path: '/',
+      });
+      response.setCookie('@refresh', refresh_token, {
+        httpOnly: true,
+        path: '/',
+      });
+      return { access_token, refresh_token };
+    }
   }
 }
