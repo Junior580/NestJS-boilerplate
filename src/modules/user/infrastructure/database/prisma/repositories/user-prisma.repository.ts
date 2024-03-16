@@ -70,7 +70,6 @@ export class UserPrismaRepository implements UserRepository {
         name: true,
         email: true,
         createdAt: true,
-        accounts: true,
         emailVerified: true,
         image: true,
         password: true,
