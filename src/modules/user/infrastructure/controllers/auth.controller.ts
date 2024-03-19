@@ -28,7 +28,6 @@ export class AuthController {
     if (isEmailVerified === false) return { isEmailVerified };
 
     if (access_token && refresh_token) {
-      console.log(' contem acess token / refresh token');
       response.setCookie('@auth', access_token, {
         httpOnly: true,
         path: '/',
