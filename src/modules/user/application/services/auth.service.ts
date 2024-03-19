@@ -1,4 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 
 import { HashProvider } from '@shared/application/providers/hashProvider/hash-provider';
 import { JwtService } from '@nestjs/jwt';
@@ -22,10 +28,11 @@ type UserInfo = {
   image?: string;
 };
 
-type Output =
-  | { access_token: string; refresh_token: string; userInfo: UserInfo }
-  | { isTwoFactorAuthEnabled: boolean }
-  | { isEmailVerified: boolean };
+type Output = {
+  access_token: string;
+  refresh_token: string;
+  userInfo: UserInfo;
+};
 
 @Injectable()
 export class AuthService implements Service<AuthInput, Output> {
@@ -63,7 +70,9 @@ export class AuthService implements Service<AuthInput, Output> {
       );
       console.log(`🔥 ~ !confirmation ~ token: ${verificationToken.token} `);
 
-      return { isEmailVerified: false };
+      throw new ForbiddenException(
+        'User email is not verified. Please verify your email to proceed.',
+      );
     }
 
     if (existingUser.isTwoFactorEnabled) {
@@ -77,7 +86,10 @@ export class AuthService implements Service<AuthInput, Output> {
 
       this.sendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token);
 
-      return { isTwoFactorAuthEnabled: true };
+      throw new HttpException(
+        'Two Factor Auth Enabled, please check 6 dig pin',
+        HttpStatus.NO_CONTENT,
+      );
     }
 
     const payload = {

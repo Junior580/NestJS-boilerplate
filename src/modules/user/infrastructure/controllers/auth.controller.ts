@@ -16,29 +16,19 @@ export class AuthController {
     @Body() createAuthDto: AuthDto,
     @Res({ passthrough: true }) response: FastifyReply,
   ) {
-    const {
-      access_token,
-      refresh_token,
-      userInfo,
-      isTwoFactorAuthEnabled,
-      isEmailVerified,
-    } = await this.authService.execute(createAuthDto);
+    const { access_token, refresh_token, userInfo } =
+      await this.authService.execute(createAuthDto);
 
-    if (isTwoFactorAuthEnabled) return { isTwoFactorAuthEnabled };
+    response.setCookie('@auth', access_token, {
+      httpOnly: true,
+      path: '/',
+    });
+    response.setCookie('@refresh', refresh_token, {
+      httpOnly: true,
+      path: '/',
+    });
 
-    if (isEmailVerified === false) return { isEmailVerified };
-
-    if (access_token && refresh_token) {
-      response.setCookie('@auth', access_token, {
-        httpOnly: true,
-        path: '/',
-      });
-      response.setCookie('@refresh', refresh_token, {
-        httpOnly: true,
-        path: '/',
-      });
-      return { userInfo };
-    }
+    return { userInfo };
   }
 
   @Post('2fa')
@@ -49,16 +39,15 @@ export class AuthController {
     const { access_token, refresh_token, userInfo } =
       await this.twoFactorAuthService.execute(twoFactorAuthDto);
 
-    if (access_token && refresh_token) {
-      response.setCookie('@auth', access_token, {
-        httpOnly: true,
-        path: '/',
-      });
-      response.setCookie('@refresh', refresh_token, {
-        httpOnly: true,
-        path: '/',
-      });
-      return { userInfo };
-    }
+    response.setCookie('@auth', access_token, {
+      httpOnly: true,
+      path: '/',
+    });
+    response.setCookie('@refresh', refresh_token, {
+      httpOnly: true,
+      path: '/',
+    });
+
+    return { userInfo };
   }
 }

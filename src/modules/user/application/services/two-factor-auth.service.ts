@@ -16,9 +16,11 @@ type UserInfo = {
   image?: string;
 };
 
-type Output =
-  | { access_token: string; refresh_token: string; userInfo: UserInfo }
-  | { message: string };
+type Output = {
+  access_token: string;
+  refresh_token: string;
+  userInfo: UserInfo;
+};
 
 @Injectable()
 export class TwoFactorAuthService
@@ -41,8 +43,6 @@ export class TwoFactorAuthService
       );
     }
 
-    // if (existingToken.token !== code)
-    //   return { message: 'Login failed, invalid code' };
     if (existingToken.token !== code) {
       throw new HttpException(
         'Login failed, invalid code',
@@ -53,9 +53,10 @@ export class TwoFactorAuthService
     const existingUser = await this.userRepository.findByEmail(email);
 
     const payload = {
-      id: existingToken.id,
-      email: existingToken.email,
+      id: existingUser.id,
+      email: existingUser.email,
       token: existingToken.token,
+      role: existingUser.role,
     };
 
     const access_token = await this.jwtService.signAsync(payload, {
