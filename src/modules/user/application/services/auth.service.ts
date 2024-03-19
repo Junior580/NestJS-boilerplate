@@ -15,8 +15,14 @@ export type AuthInput = {
   code?: string;
 };
 
+type UserInfo = {
+  name: string;
+  email: string;
+  image?: string;
+};
+
 type Output =
-  | { access_token: string; refresh_token: string }
+  | { access_token: string; refresh_token: string; userInfo: UserInfo }
   | { isTwoFactorAuthEnabled: boolean }
   | { isEmailVerified: boolean };
 
@@ -87,7 +93,13 @@ export class AuthService implements Service<AuthInput, Output> {
       expiresIn: '24h',
     });
 
-    return { access_token, refresh_token };
+    const userInfo: UserInfo = {
+      name: existingUser.name,
+      email: existingUser.email,
+      image: existingUser.image,
+    };
+
+    return { access_token, refresh_token, userInfo };
   }
 
   private async generateTwoFactorToken(email: string) {

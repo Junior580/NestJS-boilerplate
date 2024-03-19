@@ -155,12 +155,18 @@ import { UpdateUserController } from './infrastructure/controllers/update-user.c
     {
       provide: TwoFactorAuthService,
       useFactory: (
+        userRepository: UserRepository,
+
         twoFactorTokenRepository: TwoFactorTokenRepository,
         jwtService: JwtService,
       ) => {
-        return new TwoFactorAuthService(twoFactorTokenRepository, jwtService);
+        return new TwoFactorAuthService(
+          userRepository,
+          twoFactorTokenRepository,
+          jwtService,
+        );
       },
-      inject: ['TwoFactorTokenRepository', JwtService],
+      inject: ['UserRepository', 'TwoFactorTokenRepository', JwtService],
     },
     {
       provide: UpdateUserService,

@@ -19,6 +19,7 @@ export class AuthController {
     const {
       access_token,
       refresh_token,
+      userInfo,
       isTwoFactorAuthEnabled,
       isEmailVerified,
     } = await this.authService.execute(createAuthDto);
@@ -36,7 +37,7 @@ export class AuthController {
         httpOnly: true,
         path: '/',
       });
-      return { access_token, refresh_token };
+      return { userInfo };
     }
   }
 
@@ -45,10 +46,8 @@ export class AuthController {
     @Body() twoFactorAuthDto: TwoFactorAuthDto,
     @Res({ passthrough: true }) response: FastifyReply,
   ) {
-    const { access_token, refresh_token, message } =
+    const { access_token, refresh_token, userInfo } =
       await this.twoFactorAuthService.execute(twoFactorAuthDto);
-
-    if (!access_token && !refresh_token) return { message };
 
     if (access_token && refresh_token) {
       response.setCookie('@auth', access_token, {
@@ -59,7 +58,7 @@ export class AuthController {
         httpOnly: true,
         path: '/',
       });
-      return { access_token, refresh_token };
+      return { userInfo };
     }
   }
 }
