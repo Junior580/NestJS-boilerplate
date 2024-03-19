@@ -12,6 +12,7 @@ export type TwoFactorAuthInput = {
 type UserInfo = {
   name: string;
   email: string;
+  role: string;
   image?: string;
 };
 
@@ -71,6 +72,7 @@ export class TwoFactorAuthService
       name: existingUser.name,
       email: existingUser.email,
       image: existingUser.image,
+      role: existingUser.role,
     };
 
     return { access_token, refresh_token, userInfo };
