@@ -17,10 +17,11 @@ export class RolesGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
-    console.log(`🔥 ~  roles ~ :${JSON.stringify(roles)} `);
+
     if (!roles || roles.length === 0) {
       return true;
     }
+
     const request = context.switchToHttp().getRequest<FastifyRequest>();
 
     const token = this.extractTokenFromHeader(request);
@@ -29,15 +30,24 @@ export class RolesGuard implements CanActivate {
       throw new UnauthorizedException('Access denied. Token not provided.');
     }
 
-    const payload = await this.jwtService.verifyAsync(token, {
-      secret: process.env.JWT_PASS,
-    });
+    const payload = await this.jwtService
+      .verifyAsync(token, {
+        secret: process.env.JWT_PASS,
+      })
+      .catch((e) => {
+        console.log(`🔥 err catch ${JSON.stringify(e)}`);
+      });
+    console.log(`🔥 ${JSON.stringify(!!payload)}`);
 
     if (!token) {
       throw new UnauthorizedException('Access denied. Token not provided.');
     }
 
-    return roles.some((role) => payload.role === role); // Verifica se o usuário tem pelo menos um dos papéis necessários
+    if (!roles.some((role) => payload.role === role)) {
+      throw new UnauthorizedException('Access denied', 'Forbidden');
+    }
+
+    return true;
   }
 
   private extractTokenFromHeader(request: FastifyRequest): string | undefined {

@@ -10,7 +10,7 @@ export class ListUserController {
   constructor(private readonly userService: ListUserService) {}
 
   @Get()
-  @Roles('ADMIN')
+  @Roles('admin')
   @UseGuards(RolesGuard)
   listUsers(@Query() searchParams: ListUsersDto) {
     return this.userService.execute(searchParams);
