@@ -50,9 +50,15 @@ export class RolesGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: FastifyRequest): string | undefined {
-    const cookies = request.cookies;
-    const token = cookies['@auth'];
+    const authorizationHeader = request.headers['authorization'];
 
-    return token ? token : undefined;
+    if (authorizationHeader && typeof authorizationHeader === 'string') {
+      const parts = authorizationHeader.split(' ');
+      if (parts.length === 2 && parts[0] === 'Bearer') {
+        return parts[1];
+      }
+    }
+
+    return null;
   }
 }

@@ -1,44 +1,54 @@
+import { UserRepository } from '@modules/user/domain/repositories/user.repository';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Service } from '@shared/application/services';
 
 export type RefreshTokenInput = {
   refresh_token: string;
 };
 
-type Output = { access_token: string; refresh_token: string };
+type Output = {
+  access_token: string;
+};
 
 @Injectable()
-export class RefreshTokenService implements Service<RefreshTokenInput, Output> {
-  constructor(private readonly jwtService: JwtService) {}
-  async execute(input: RefreshTokenInput): Promise<Output> {
-    try {
-      await this.jwtService.verify(input.refresh_token, {
-        secret: process.env.JWT_PASS,
-      });
-    } catch (error) {
-      throw new UnauthorizedException('Invalid refresh token');
+export class RefreshTokenService {
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly jwtService: JwtService,
+  ) {}
+
+  async execute(refreshTokenInput: RefreshTokenInput): Promise<Output> {
+    const { refresh_token } = refreshTokenInput;
+
+    if (!refresh_token) {
+      throw new UnauthorizedException('Refresh token not provided');
     }
 
-    const user = await this.jwtService.decode(input.refresh_token);
+    try {
+      const token = await this.jwtService.verifyAsync(refresh_token, {
+        secret: process.env.JWT_PASS,
+      });
 
-    const payload = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    };
+      const user = await this.userRepository.findById(token.id);
 
-    const updatedToken = await this.jwtService.signAsync(payload, {
-      expiresIn: '5m',
-    });
+      if (!user) {
+        throw new UnauthorizedException('Invalid refresh token');
+      }
 
-    const updatedRefreshToken = await this.jwtService.signAsync(payload, {
-      expiresIn: '15m',
-    });
+      const accessPayload = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      };
 
-    return {
-      access_token: updatedToken,
-      refresh_token: updatedRefreshToken,
-    };
+      const access_token = await this.jwtService.signAsync(accessPayload, {
+        expiresIn: '15m',
+      });
+
+      return { access_token };
+    } catch {
+      throw new UnauthorizedException('JWT token is invalid');
+    }
   }
 }

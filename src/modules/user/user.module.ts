@@ -183,6 +183,13 @@ import { UpdateUserController } from './infrastructure/controllers/update-user.c
       },
       inject: ['UserRepository', VerificationTokenService, 'MailProvider'],
     },
+    {
+      provide: RefreshTokenService,
+      useFactory: (userRepository: UserRepository, jwtService: JwtService) => {
+        return new RefreshTokenService(userRepository, jwtService);
+      },
+      inject: ['UserRepository', JwtService],
+    },
   ],
 })
 export class UserModule {}

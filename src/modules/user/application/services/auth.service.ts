@@ -68,6 +68,7 @@ export class AuthService implements Service<AuthInput, Output> {
         verificationToken.email,
         verificationToken.token,
       );
+
       console.log(`🔥 ~ !confirmation ~ token: ${verificationToken.token} `);
 
       throw new ForbiddenException(
@@ -92,17 +93,22 @@ export class AuthService implements Service<AuthInput, Output> {
       );
     }
 
-    const payload = {
+    const accessPayload = {
       id: existingUser.id,
       name: existingUser.name,
       email: existingUser.email,
+      role: existingUser.role,
     };
 
-    const access_token = await this.jwtService.signAsync(payload, {
-      expiresIn: '24h',
+    const refreshPayload = {
+      id: existingUser.id,
+    };
+
+    const access_token = await this.jwtService.signAsync(accessPayload, {
+      expiresIn: '15m',
     });
 
-    const refresh_token = await this.jwtService.signAsync(payload, {
+    const refresh_token = await this.jwtService.signAsync(refreshPayload, {
       expiresIn: '24h',
     });
 

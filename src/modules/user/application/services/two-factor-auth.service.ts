@@ -52,18 +52,22 @@ export class TwoFactorAuthService
 
     const existingUser = await this.userRepository.findByEmail(email);
 
-    const payload = {
+    const accessPayload = {
       id: existingUser.id,
+      name: existingUser.name,
       email: existingUser.email,
-      token: existingToken.token,
       role: existingUser.role,
     };
 
-    const access_token = await this.jwtService.signAsync(payload, {
+    const refreshPayload = {
+      id: existingUser.id,
+    };
+
+    const access_token = await this.jwtService.signAsync(accessPayload, {
       expiresIn: '24h',
     });
 
-    const refresh_token = await this.jwtService.signAsync(payload, {
+    const refresh_token = await this.jwtService.signAsync(refreshPayload, {
       expiresIn: '24h',
     });
 

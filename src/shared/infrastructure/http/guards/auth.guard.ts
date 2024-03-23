@@ -25,7 +25,6 @@ export class AuthGuard implements CanActivate {
         secret: process.env.JWT_PASS,
       });
       console.log(`payload ${JSON.stringify(payload)}`);
-      // request['user'] = payload;
     } catch {
       throw new UnauthorizedException('JWT token is invalid');
     }
