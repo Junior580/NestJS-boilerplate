@@ -1,17 +1,27 @@
 import {
+  Injectable,
   CanActivate,
   ExecutionContext,
-  Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Reflector } from '@nestjs/core';
+import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { FastifyRequest } from 'fastify';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+export class AuthsGuard implements CanActivate {
+  constructor(
+    private reflector: Reflector,
+    private jwtService: JwtService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const roles = this.reflector.get<string[]>('roles', context.getHandler());
+
+    if (!roles || roles.length === 0) {
+      return true;
+    }
+
     const request = context.switchToHttp().getRequest<FastifyRequest>();
 
     const token = this.extractTokenFromHeader(request);
@@ -24,17 +34,34 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: process.env.JWT_PASS,
       });
-      console.log(`payload ${JSON.stringify(payload)}`);
-    } catch {
-      throw new UnauthorizedException('JWT token is invalid');
+
+      if (!token) {
+        throw new UnauthorizedException('Access denied. Token not provided.');
+      }
+
+      if (!roles.some((role) => payload.role === role)) {
+        throw new UnauthorizedException('Access denied', 'Forbidden');
+      }
+
+      return true;
+    } catch (error) {
+      if (error instanceof TokenExpiredError) {
+        throw new UnauthorizedException('Access denied. Token expired.');
+      }
+      throw error;
     }
-    return true;
   }
 
   private extractTokenFromHeader(request: FastifyRequest): string | undefined {
-    const cookies = request.cookies;
-    const token = cookies['@auth'];
+    const authorizationHeader = request.headers['authorization'];
 
-    return token ? token : undefined;
+    if (authorizationHeader && typeof authorizationHeader === 'string') {
+      const parts = authorizationHeader.split(' ');
+      if (parts.length === 2 && parts[0] === 'Bearer') {
+        return parts[1];
+      }
+    }
+
+    return null;
   }
 }
