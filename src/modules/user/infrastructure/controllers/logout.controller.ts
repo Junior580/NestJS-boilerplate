@@ -4,9 +4,8 @@ import { FastifyReply } from 'fastify';
 @Controller('auth/logout')
 export class LogoutController {
   @Post()
-  async logout(@Res({ passthrough: true }) response: FastifyReply) {
-    response.clearCookie('@auth');
-    response.clearCookie('@refresh');
+  async logout(@Res({ passthrough: true }) reply: FastifyReply) {
+    reply.clearCookie('@auth');
 
     return { success: 'ok' };
   }
